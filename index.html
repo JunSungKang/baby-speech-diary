@@ -1,0 +1,25 @@
+---
+layout: default
+title: 홈
+---
+
+<div class="card intro">
+    <h2>환영합니다! 👋</h2>
+    <p>이곳은 우리 아이의 소중한 말하기 성장 과정을 기록하는 공간입니다.</p>
+    <p>처음 옹알이부터 문장을 말하기까지, 그 놀라운 변화를 기록합니다.</p>
+</div>
+
+<div class="card">
+    <h2>최근 기록 📝</h2>
+    <ul>
+        {% for post in site.posts limit:5 %}
+        <li>
+            <span class="post-meta">{{ post.date | date: "%Y년 %m월 %d일" }}</span>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div style="text-align: right; margin-top: 20px;">
+        <a href="{{ "/logs/" | relative_url }}">모든 기록 보기 &rarr;</a>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="{{ "/" | relative_url }}">{{ site.title }}</a></h1>
+            <p>{{ site.description }}</p>
+            <nav>
+                <a href="{{ "/" | relative_url }}" class="{% if page.url == '/' %}current{% endif %}">홈</a>
+                <a href="{{ "/logs/" | relative_url }}" class="{% if page.url contains '/logs/' %}current{% endif %}">기록</a>
+                <a href="{{ "/milestones/" | relative_url }}" class="{% if page.url contains '/milestones/' %}current{% endif %}">발달 단계</a>
+            </nav>
+        </header>
+
+        <main>
+            {{ content }}
+        </main>
+
+        <footer>
+            <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
