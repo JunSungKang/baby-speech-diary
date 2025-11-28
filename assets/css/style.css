@@ -1,139 +1,136 @@
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Quicksand:wght@400;600&display=swap');
 
 :root {
-    --bg-color: #FFF9C4;
-    --card-bg: #FFFFFF;
-    --text-color: #5D4037; /* Warm brown */
-    --accent-color: #FFAB91; /* Soft coral/orange */
-    --link-color: #8D6E63;
-    --border-radius: 12px;
-    --spacing: 20px;
+    --primary-color: #558B2F; /* Deep Green for text */
+    --accent-color: #8BC34A; /* Light Green for highlights */
+    --bg-gradient-start: #F1F8E9; /* Very light green */
+    --bg-gradient-end: #DCEDC8; /* Light green */
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-color: #33691E;
+    --border-radius: 20px;
 }
 
 body {
-    background-color: var(--bg-color);
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    background-attachment: fixed;
     color: var(--text-color);
     font-family: 'Quicksand', 'Gowun Dodum', sans-serif;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
-}
-
-a {
-    color: var(--link-color);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-a:hover {
-    color: var(--accent-color);
+    min-height: 100vh;
+    line-height: 1.8;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: var(--spacing);
+    padding: 40px 20px;
 }
 
 header {
     text-align: center;
     padding: 40px 0;
+    margin-bottom: 20px;
 }
 
 header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: var(--text-color);
+    font-size: 3rem;
+    margin: 0;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
 }
 
-nav {
-    margin-top: 20px;
-}
-
-nav a {
-    margin: 0 15px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 5px 10px;
-    border-radius: var(--border-radius);
-}
-
-nav a.current {
-    background-color: rgba(255, 255, 255, 0.5);
+header p {
+    font-size: 1.2rem;
+    color: #689F38;
+    margin-top: 10px;
 }
 
 main {
-    background-color: transparent;
-}
-
-.card {
     background-color: var(--card-bg);
-    padding: 30px;
+    padding: 40px;
     border-radius: var(--border-radius);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(51, 105, 30, 0.1);
+    backdrop-filter: blur(5px);
 }
 
+/* Markdown Content Styling */
 h2 {
-    border-bottom: 2px solid var(--bg-color);
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--accent-color);
     padding-bottom: 10px;
-    margin-top: 0;
-    color: var(--text-color);
+    margin-top: 40px;
+    font-size: 1.8rem;
+}
+
+h3 {
+    color: #689F38;
+    margin-top: 30px;
 }
 
 table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 30px 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 th, td {
-    padding: 12px;
-    border-bottom: 1px solid #EEE;
+    padding: 15px 20px;
     text-align: left;
+    border-bottom: 1px solid #F1F8E9;
 }
 
 th {
-    background-color: #FFFDE7; /* Very light yellow */
+    background-color: #8BC34A;
+    color: white;
     font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.95rem;
 }
 
-footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9rem;
-    opacity: 0.8;
+tr:last-child td {
+    border-bottom: none;
 }
 
-/* Responsive */
+tr:hover td {
+    background-color: #F9FBE7;
+}
+
+blockquote {
+    background-color: #F1F8E9;
+    border-left: 5px solid var(--accent-color);
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-radius: 0 8px 8px 0;
+    color: #558B2F;
+}
+
+/* Mobile Responsive */
 @media (max-width: 600px) {
     .container {
-        padding: 10px;
+        padding: 15px;
     }
     
     header h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
-    nav a {
-        display: inline-block;
-        margin: 5px;
-    }
-    
-    .card {
+    main {
         padding: 20px;
     }
-}
-
-/* Utility */
-.post-meta {
-    font-size: 0.9rem;
-    color: #888;
-    margin-bottom: 15px;
-    display: block;
-}
-
-.intro {
-    text-align: center;
-    margin-bottom: 40px;
+    
+    th, td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    /* Scrollable table for small screens */
+    .table-wrapper {
+        overflow-x: auto;
+    }
 }
