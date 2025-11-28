@@ -1,7 +1,7 @@
 title: "아기 발음 기록장"
 description: "우리 아기의 소중한 말하기 성장 기록"
-baseurl: ""
-url: ""
+baseurl: "/baby-speech-diary" # 중요: 깃허브 저장소 이름(Repository Name)을 여기에 적어주세요. (예: /my-blog)
+url: "" # 깃허브 아이디.github.io (선택사항)
 theme: null
 plugins:
   - jekyll-seo-tag
