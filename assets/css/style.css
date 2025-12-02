@@ -22,7 +22,7 @@ body {
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1180px;
     margin: 0 auto;
     padding: 40px 20px;
 }
@@ -138,7 +138,7 @@ blockquote {
 /* Card Table Transformation */
 .card-table {
     display: block;
-    width: 75%; /* Reduced width as requested */
+    width: 100%;
     margin: 0 auto; /* Center the table */
 }
 
