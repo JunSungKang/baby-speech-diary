@@ -138,7 +138,8 @@ blockquote {
 /* Card Table Transformation */
 .card-table {
     display: block;
-    width: 100%;
+    width: 75%; /* Reduced width as requested */
+    margin: 0 auto; /* Center the table */
 }
 
 .card-table thead {
@@ -147,8 +148,8 @@ blockquote {
 
 .card-table tbody {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr); /* Desktop: 4 columns */
+    gap: 15px;
     padding: 10px 0;
 }
 
@@ -156,13 +157,14 @@ blockquote {
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    text-align: center; /* Center text inside cards */
 }
 
 .card-table tr:hover {
@@ -183,7 +185,7 @@ blockquote {
 .card-table td::before {
     content: attr(data-label);
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--primary-color);
     font-weight: 700;
     margin-bottom: 4px;
@@ -191,24 +193,44 @@ blockquote {
     letter-spacing: 0.5px;
 }
 
-/* Specific styling for the first cell (Word) to make it pop */
+/* 1. Word (First Column) */
 .card-table td:first-child {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #2e7d32;
     margin-bottom: 8px;
     border-bottom: 2px solid #f1f8e9;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
 }
 
 .card-table td:first-child::before {
-    display: none; /* Hide label for the main title of the card */
+    display: none; 
+}
+
+/* 2. Meaning (Second Column) - Increased Size */
+.card-table td:nth-child(2) {
+    font-size: 1.2rem; /* Increased from default */
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
 }
 
 /* Responsive adjustments */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+    .card-table {
+        width: 90%; /* Use more space on tablet */
+    }
     .card-table tbody {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, 1fr); /* Tablet: 3 columns */
+    }
+}
+
+@media (max-width: 600px) {
+    .card-table {
+        width: 90%; /* Use more space on mobile */
+    }
+    .card-table tbody {
+        grid-template-columns: 1fr; /* Mobile: 1 column */
     }
     
     .card-table tr {
