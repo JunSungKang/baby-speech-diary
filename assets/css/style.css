@@ -134,3 +134,84 @@ blockquote {
         overflow-x: auto;
     }
 }
+
+/* Card Table Transformation */
+.card-table {
+    display: block;
+    width: 100%;
+}
+
+.card-table thead {
+    display: none;
+}
+
+.card-table tbody {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.card-table tr {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-table tr:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+    border-color: var(--accent-color);
+}
+
+.card-table td {
+    display: block;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #444;
+}
+
+.card-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Specific styling for the first cell (Word) to make it pop */
+.card-table td:first-child {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #f1f8e9;
+    padding-bottom: 12px;
+}
+
+.card-table td:first-child::before {
+    display: none; /* Hide label for the main title of the card */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .card-table tbody {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-table tr {
+        padding: 20px;
+    }
+}
