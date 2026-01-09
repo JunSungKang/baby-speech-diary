@@ -62,10 +62,15 @@ function initializeElements() {
     };
 }
 
-// 모바일 모드 체크 (768px 미만)
+// 모바일 모드 체크 (767px 이하)
 function isMobileMode() {
-    return window.innerWidth < 768;
+    return window.matchMedia('(max-width: 767px)').matches;
 }
+
+// 리사이즈 시 대응
+window.addEventListener('resize', () => {
+    renderCurrentSpread();
+});
 
 // ============================================
 // 3. 데이터 파싱 (JSON 기반)
@@ -172,6 +177,7 @@ function navigateRelative(direction) {
         const target = BookApp.currentSpreadIndex + direction;
         if (target >= 0 && target < BookApp.totalSpreads) {
             BookApp.currentSpreadIndex = target;
+            BookApp.currentSide = 'left'; // PC로 돌아왔을 때 기본값 초기화
         }
     }
     renderCurrentSpread();
@@ -410,10 +416,20 @@ function handleKeyboard(event) {
 
 function handleLeftPageClick(event) {
     if (BookApp.isTransitioning) return;
-    navigateRelative(-1);
+    if (isMobileMode()) {
+        // 모바일에서 한 페이지만 보일 때는 클릭 시 다음 페이지로 (사용자 편의)
+        navigateRelative(1);
+    } else {
+        navigateRelative(-1);
+    }
 }
 
 function handleRightPageClick(event) {
     if (BookApp.isTransitioning) return;
-    navigateRelative(1);
+    if (isMobileMode()) {
+        // 모바일에서 한 페이지만 보일 때는 클릭 시 다음 페이지로
+        navigateRelative(1);
+    } else {
+        navigateRelative(1);
+    }
 }

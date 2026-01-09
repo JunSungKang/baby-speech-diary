@@ -30,7 +30,7 @@
 
     /* 크기 */
     --book-max-width: 1100px;
-    --book-max-height: 760px;
+    --book-max-height: 680px;
     --page-padding: 40px;
     --binding-width: 5%;
     --page-width: 47.5%;
@@ -722,27 +722,24 @@ body {
 
     .page {
         width: 100% !important;
-        height: 100% !important;
-        min-height: 500px;
-        padding: 30px 20px;
-        margin-bottom: 0;
-        border-radius: 12px;
-        box-shadow: none !important;
+        height: auto !important;
+        min-height: 550px !important;
+        padding: 30px 20px !important;
+        margin-bottom: 0 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
         cursor: default !important;
-        background-size: 5mm 5mm;
-        /* 모바일에서는 그리드 작게 */
+        background-size: 5mm 5mm !important;
         display: none !important;
-        /* 기본적으로 모두 숨김 */
     }
 
     .page.active-mobile {
         display: flex !important;
-        /* 활성화된 페이지만 표시 */
     }
 
     .page-left:hover,
     .page-right:hover {
-        box-shadow: none !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
     }
 
     /* 중앙 제본 영역 숨김 (모바일) */
@@ -752,19 +749,20 @@ body {
 
     /* 사진 영역 크기 조정 */
     .photo-area {
-        aspect-ratio: 1 / 1;
-        /* 모바일은 정사가각형이 무난 */
-        margin-top: 10px;
+        aspect-ratio: 1 / 1 !important;
+        margin-top: 10px !important;
     }
 
     /* 페이지 하단 번호 위치 조정 */
     .page-number {
         position: relative !important;
         bottom: 0 !important;
-        margin-top: 20px !important;
-        text-align: right;
+        margin-top: 25px !important;
+        text-align: right !important;
         transform: none !important;
         left: auto !important;
+        width: 100% !important;
+        display: block !important;
     }
 
     /* 페이지 컨트롤 바닥 고정 */
@@ -774,11 +772,11 @@ body {
         left: 50% !important;
         transform: translateX(-50%) !important;
         z-index: 1000 !important;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.95) !important;
         padding: 10px 20px !important;
         border-radius: 50px !important;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px) !important;
         width: 90% !important;
         max-width: 400px !important;
         display: flex !important;
@@ -795,12 +793,12 @@ body {
     .cover-content {
         padding: 30px 15px !important;
         height: auto !important;
-        min-height: 350px !important;
+        min-height: 400px !important;
         justify-content: center !important;
     }
 
     .cover-title .main {
-        font-size: 2rem !important;
+        font-size: 1.8rem !important;
     }
 
     .intro-layer {
@@ -821,7 +819,6 @@ body {
 
     .word-list {
         display: block !important;
-        /* 그리드 대신 세로 나열 */
         border-top: 1px solid var(--text-primary) !important;
         height: auto !important;
     }
