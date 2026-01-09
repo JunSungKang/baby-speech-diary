@@ -107,124 +107,7 @@ body {
     font-size: 0.9rem;
 }
 
-@media (max-width: 767px) {
-    .mobile-warning {
-        display: none !important;
-    }
 
-    body {
-        padding: 10px;
-        justify-content: flex-start;
-        overflow-y: auto;
-    }
-
-    .book-container {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        box-shadow: none;
-        border-radius: 0;
-        background: transparent;
-    }
-
-    .page {
-        width: 100% !important;
-        height: auto !important;
-        min-height: 50vh;
-        padding: 30px 20px;
-        margin-bottom: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        cursor: default !important;
-        background-size: 5mm 5mm;
-        /* 모바일에서는 그리드 작게 */
-    }
-
-    .page-left:hover,
-    .page-right:hover {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        /* 호버 효과 제거 대신 기본 유지 */
-    }
-
-    /* 중앙 제본 영역 숨김 (모바일) */
-    .binding-area {
-        display: none;
-    }
-
-    /* 사진 영역 크기 조정 */
-    .photo-area {
-        aspect-ratio: 1 / 1;
-        /* 모바일은 정사가각형이 무난 */
-        margin-top: 10px;
-    }
-
-    /* 페이지 하단 번호 위치 조정 */
-    .page-number {
-        position: relative;
-        bottom: 0;
-        margin-top: 20px;
-        text-align: right;
-        transform: none;
-        left: auto;
-    }
-
-    /* 페이지 컨트롤 바닥 고정 */
-    .page-controls {
-        position: sticky;
-        bottom: 20px;
-        z-index: 100;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 10px;
-        border-radius: 50px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        width: 100%;
-        max-width: 300px;
-        margin: 20px auto;
-    }
-
-    .control-btn {
-        padding: 10px 18px;
-        font-size: 0.9rem;
-    }
-
-    /* 레이어별 모바일 최적화 */
-    .cover-content {
-        padding: 30px 15px;
-        height: auto;
-        min-height: 300px;
-        justify-content: center;
-    }
-
-    .cover-title .main {
-        font-size: 1.8rem;
-    }
-
-    .intro-layer {
-        padding: 10px;
-    }
-
-    .prologue-text {
-        font-size: 1.1rem;
-        margin-bottom: 20px;
-    }
-
-    .profile-list {
-        padding: 15px;
-    }
-
-    .word-list {
-        display: block !important;
-        /* 그리드 대신 세로 나열 */
-        border-top: 1px solid var(--text-primary);
-    }
-
-    .word-item {
-        padding: 12px 0;
-        border-bottom: 1px solid var(--grid-line);
-        height: auto !important;
-    }
-}
 
 
 .book-container {
@@ -791,4 +674,156 @@ body {
 .toc-list {
     display: none;
     /* 목차 숨김 */
+}
+
+/* ============================================
+   18. 모바일 반응형 페이지 최종 보정 (End of File)
+   ============================================ */
+@media (max-width: 767px) {
+    .mobile-warning {
+        display: none !important;
+    }
+
+    body {
+        padding: 10px !important;
+        display: block !important;
+        height: auto !important;
+        overflow-y: auto !important;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%) !important;
+    }
+
+    #book-view.active {
+        position: relative !important;
+        display: block !important;
+        padding: 0 !important;
+        height: auto !important;
+        min-height: 100vh;
+        z-index: 1;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        background: transparent !important;
+        /* body 배경 사용 */
+    }
+
+    .book-container {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        min-height: 100vh;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        width: 100% !important;
+        max-width: none !important;
+        overflow: visible !important;
+        margin-bottom: 100px;
+        /* 고정 버튼 공간 */
+    }
+
+    .page {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 400px;
+        padding: 30px 20px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        cursor: default !important;
+        background-size: 5mm 5mm;
+        /* 모바일에서는 그리드 작게 */
+    }
+
+    .page-left:hover,
+    .page-right:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        /* 호버 효과 제거 대신 기본 유지 */
+    }
+
+    /* 중앙 제본 영역 숨김 (모바일) */
+    .binding-area {
+        display: none !important;
+    }
+
+    /* 사진 영역 크기 조정 */
+    .photo-area {
+        aspect-ratio: 1 / 1;
+        /* 모바일은 정사가각형이 무난 */
+        margin-top: 10px;
+    }
+
+    /* 페이지 하단 번호 위치 조정 */
+    .page-number {
+        position: relative !important;
+        bottom: 0 !important;
+        margin-top: 20px !important;
+        text-align: right;
+        transform: none !important;
+        left: auto !important;
+    }
+
+    /* 페이지 컨트롤 바닥 고정 */
+    .page-controls {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 1000 !important;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 10px 20px !important;
+        border-radius: 50px !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+        backdrop-filter: blur(10px);
+        width: 90% !important;
+        max-width: 400px !important;
+        display: flex !important;
+        justify-content: space-around !important;
+    }
+
+    .control-btn {
+        padding: 10px 18px !important;
+        font-size: 0.9rem !important;
+        border-radius: 25px !important;
+    }
+
+    /* 레이어별 모바일 최적화 */
+    .cover-content {
+        padding: 30px 15px !important;
+        height: auto !important;
+        min-height: 350px !important;
+        justify-content: center !important;
+    }
+
+    .cover-title .main {
+        font-size: 2rem !important;
+    }
+
+    .intro-layer {
+        padding: 10px !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .prologue-text {
+        font-size: 1.1rem !important;
+        margin-bottom: 20px !important;
+        height: auto !important;
+    }
+
+    .profile-list {
+        padding: 15px !important;
+    }
+
+    .word-list {
+        display: block !important;
+        /* 그리드 대신 세로 나열 */
+        border-top: 1px solid var(--text-primary) !important;
+        height: auto !important;
+    }
+
+    .word-item {
+        padding: 15px 0 !important;
+        border-bottom: 1px solid var(--grid-line) !important;
+        height: auto !important;
+        display: block !important;
+    }
 }

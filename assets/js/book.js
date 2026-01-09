@@ -24,8 +24,7 @@ const BookApp = {
         leftPageNumber: null,
         rightPageNumber: null,
         prevBtn: null,
-        nextBtn: null,
-        btnCloseWarning: null
+        nextBtn: null
     },
 
     isTransitioning: false,
@@ -58,8 +57,7 @@ function initializeElements() {
         leftPageNumber: document.getElementById('left-page-number'),
         rightPageNumber: document.getElementById('right-page-number'),
         prevBtn: document.getElementById('prev-btn'),
-        nextBtn: document.getElementById('next-btn'),
-        btnCloseWarning: document.getElementById('btn-close-warning')
+        nextBtn: document.getElementById('next-btn')
     };
 }
 
@@ -141,19 +139,6 @@ function setupEventListeners() {
     }
     if (BookApp.elements.nextBtn) {
         BookApp.elements.nextBtn.addEventListener('click', () => navigateToSpread(BookApp.currentSpreadIndex + 1));
-    }
-
-    // 모바일 경고창 닫기 버튼 이벤트
-    if (BookApp.elements.btnCloseWarning) {
-        BookApp.elements.btnCloseWarning.addEventListener('click', closeMobileWarning);
-    }
-}
-
-function closeMobileWarning() {
-    const warningEl = document.getElementById('mobile-warning');
-    if (warningEl) {
-        warningEl.style.display = 'none';
-        document.body.style.overflow = 'auto'; // 스크롤 허용
     }
 }
 
