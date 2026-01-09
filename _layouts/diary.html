@@ -16,15 +16,13 @@
 </head>
 <body>
 
-    <!-- 일반 리스트 뷰 (기본) -->
-    <div id="list-view" class="view-mode active">
+    <!-- 일반 리스트 뷰 (숨김, 데이터 파싱용) -->
+    <div id="list-view" class="view-mode" style="display: none;">
         <header>
             <h1>👶 아기 발음 기록장</h1>
             <p>우리 아기의 소중한 말들이 자라나는 기록</p>
             
-            <button id="btn-open-book" class="view-toggle-btn">
-                📖 책으로 보기
-            </button>
+            <!-- 버튼 제거 -->
         </header>
 
         <main class="container">
@@ -36,7 +34,7 @@
     </div>
 
     <!-- 책 뷰 (오버레이) -->
-    <div id="book-view" class="view-mode">
+    <div id="book-view" class="view-mode active">
         <!-- 모바일 미지원 안내 -->
         <div id="mobile-warning" class="mobile-warning">
             <div class="warning-content">
@@ -47,11 +45,7 @@
             </div>
         </div>
 
-        <div class="book-overlay-header">
-            <button id="btn-close-book" class="close-book-btn">
-                ✕ 닫기
-            </button>
-        </div>
+
 
         <!-- 책 컨테이너 -->
         <div id="book-container" class="book-container">

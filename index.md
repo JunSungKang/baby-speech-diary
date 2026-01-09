@@ -2,12 +2,7 @@
 layout: diary
 ---
 
-<div style="text-align: center; margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.8); border-radius: 12px;">
-    <a href="{{ "/book.html" | relative_url }}" style="display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #8BC34A 0%, #558B2F 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(85, 139, 47, 0.3); transition: all 0.3s ease;">
-        📖 책으로 보기
-    </a>
-    <p style="margin-top: 10px; color: #558B2F; font-size: 0.9rem;">실제 책을 넘기듯 우리 아기의 성장 기록을 감상해보세요</p>
-</div>
+
 
 ## 📅 발음 성장 기록
 

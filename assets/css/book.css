@@ -301,25 +301,29 @@ body {
 .word-list {
     flex: 1;
     margin-top: 20px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: repeat(10, minmax(0, 1fr)); /* 10줄 고정, minmax는 overflow 방지 */
     gap: 0;
     overflow: hidden;
+    border-top: 2px solid var(--text-primary); /* 테이블 상단 강조 */
 }
 
 /* 단어 아이템 */
 .word-item {
-    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(232, 232, 232, 0.5);
+    padding: 4px 0; /* 패딩 축소 */
+    border-bottom: 1px solid rgba(232, 232, 232, 0.8);
 }
 
 .word-item:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid rgba(232, 232, 232, 0.8);
 }
+
+/* 빈 슬롯(테이블 줄)도 표현하고 싶다면 JS에서 빈 div를 채워주거나, 
+   CSS background로 선을 그릴 수 있음. 
+   여기서는 일단 레이아웃 고정(간격 유지)에 집중. */
 
 /* 단어 구조 계층 */
 .word-primary {

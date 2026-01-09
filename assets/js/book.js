@@ -40,10 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
     parseDataFromDOM(); // HTML DOM에서 데이터 추출
     setupEventListeners();
     
-    // URL 해시 체크 (#book으로 오면 바로 책 뷰 열기)
-    if (window.location.hash === '#book') {
-        openBookView();
-    }
+    // URL 해시 체크 제거 -> 항상 책 뷰 활성화
+    renderCurrentSpread();
 });
 
 /**
@@ -100,6 +98,7 @@ function parseDataFromDOM() {
     let currentSpread = null;
 
     // content의 직계 자식 노드 순회
+    // content의 직계 자식 노드 순회
     Array.from(content.children).forEach(node => {
         // 1. 새로운 Spread 섹션 시작 (H2 태그)
         if (node.tagName === 'H2') {
@@ -118,18 +117,16 @@ function parseDataFromDOM() {
         else if (node.tagName === 'P' && currentSpread) {
             const text = node.textContent.trim();
             
-            // 메모 파싱
+            // 메모 파싱 (여러 개가 같은 줄에 있을 수 있으므로 정규식 각각 체크)
             const memoMatch = text.match(/\[메모:\s*(.*?)\]/);
             if (memoMatch) {
                 currentSpread.memo = memoMatch[1].trim();
-                return; // 처리 완료
             }
             
             // 사진 파싱
             const photoMatch = text.match(/\[사진:\s*(.*?)\]/);
             if (photoMatch) {
                 currentSpread.photo = photoMatch[1].trim();
-                return;
             }
         }
         
@@ -290,10 +287,23 @@ function renderWordList(words, startIndex) {
     if (!BookApp.elements.wordList) return;
     BookApp.elements.wordList.innerHTML = '';
     
+    // 1. 실제 단어 렌더링
     words.forEach((wordData, index) => {
         const wordItem = createWordElement(wordData, startIndex + index);
         BookApp.elements.wordList.appendChild(wordItem);
     });
+
+    // 2. 빈 줄 채우기 (항상 10줄 유지)
+    const MAX_ROWS = 10;
+    const remaining = MAX_ROWS - words.length;
+    if (remaining > 0) {
+        for (let i = 0; i < remaining; i++) {
+            const emptyItem = document.createElement('div');
+            emptyItem.className = 'word-item empty-slot'; // empty-slot 클래스 추가
+            // 빈 공간에도 줄을 긋기 위해 스타일 유지
+            BookApp.elements.wordList.appendChild(emptyItem);
+        }
+    }
 }
 
 function createWordElement(wordData, number) {
