@@ -149,19 +149,31 @@ body {
         linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 10mm 10mm; /* 1cm 단위 */
     background-color: var(--paper-white);
-}
-
-/* ============================================
-   7. 좌측 페이지
-   ============================================ */
-.page-left {
+    
+    /* Common Page Layout Properties */
     width: var(--page-width);
     padding: var(--page-padding);
     display: flex;
     flex-direction: column;
     position: relative;
-    cursor: w-resize;
     transition: box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.page-layer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* ============================================
+   7. 좌측 페이지
+   ============================================ */
+/* 좌측 페이지 */
+.page-left {
+    cursor: w-resize;
 }
 
 .page-left:hover {
@@ -208,17 +220,17 @@ body {
 
 /* 메모 영역 */
 /* 메모 영역 - 포스트잇 스타일 */
-/* 메모 영역 - 사진 하단 긴 설명창 스타일 */
+/* 메모 영역 (좌측) - 가로 긴 형태 */
 .memo-area {
     width: 100%;
-    min-height: 80px; /* 2~3줄 정도 확보 */
-    margin: 10px 0 20px 0;
-    background: #fff9c4; /* 포스트잇 색감 유지 */
+    flex: 1; /* 남은 공간 자연스럽게 차지 */
+    max-height: 150px;
+    min-height: 80px;
+    margin: 10px 0 40px 0;
+    background: #fff9c4;
     padding: 15px 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transform: none; /* 회전 제거 */
-    border: none;
-    border-radius: 4px; /* 살짝 둥글게 */
+    border-radius: 4px;
     
     font-family: 'Nanum Pen Script', cursive;
     font-size: 1.3rem;
@@ -232,13 +244,10 @@ body {
 }
 
 .memo-area::after {
-    content: none; /* 접힌 효과 제거 */
+    content: none; 
 }
 
-.memo-placeholder {
-    width: 100%;
-    word-break: keep-all;
-}
+.memo-placeholder { width: 100%; word-break: keep-all; }
 
 /* ============================================
    8. 중앙 제본 영역
@@ -273,14 +282,9 @@ body {
 /* ============================================
    9. 우측 페이지
    ============================================ */
+/* 우측 페이지 */
 .page-right {
-    width: var(--page-width);
-    padding: var(--page-padding);
-    display: flex;
-    flex-direction: column;
-    position: relative;
     cursor: e-resize;
-    transition: box-shadow 0.3s ease;
 }
 
 .page-right:hover {
@@ -297,13 +301,13 @@ body {
 
 /* 단어 목록 영역 */
 .word-list {
-    flex: 1;
+    flex: 1; /* 높이 채우기 */
     margin-top: 20px;
+    margin-bottom: 30px; /* 페이지 번호 위 공간 */
     display: grid;
-    grid-template-rows: repeat(10, minmax(0, 1fr)); /* 10줄 고정, minmax는 overflow 방지 */
+    grid-template-rows: repeat(10, 1fr); /* 10등분 (동일 간격 보장) */
     gap: 0;
-    overflow: hidden;
-    border-top: 2px solid var(--text-primary); /* 테이블 상단 강조 */
+    border-top: 2px solid var(--text-primary);
 }
 
 /* 단어 아이템 */
@@ -311,8 +315,10 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 4px 0; /* 패딩 축소 */
+    padding: 0 10px;
     border-bottom: 1px solid rgba(232, 232, 232, 0.8);
+    width: 100%;
+    height: 100%; /* Grid Cell 채우기 */
 }
 
 .word-item:last-child {
