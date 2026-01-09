@@ -208,38 +208,36 @@ body {
 
 /* 메모 영역 */
 /* 메모 영역 - 포스트잇 스타일 */
+/* 메모 영역 - 사진 하단 긴 설명창 스타일 */
 .memo-area {
-    width: 200px; /* 고정 너비 */
-    height: 200px; /* 정사각형 비율 */
-    margin: 20px auto; /* 중앙 정렬 */
-    background: #fff9c4; /* 포스트잇 노란색 */
-    padding: 20px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    transform: rotate(-2deg); /* 약간 기울이기 */
+    width: 100%;
+    min-height: 80px; /* 2~3줄 정도 확보 */
+    margin: 10px 0 20px 0;
+    background: #fff9c4; /* 포스트잇 색감 유지 */
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transform: none; /* 회전 제거 */
     border: none;
-    border-radius: 0;
+    border-radius: 4px; /* 살짝 둥글게 */
+    
     font-family: 'Nanum Pen Script', cursive;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    position: relative;
 }
 
 .memo-area::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    border-width: 0 0 20px 20px;
-    border-style: solid;
-    border-color: transparent transparent rgba(0,0,0,0.1) transparent; 
+    content: none; /* 접힌 효과 제거 */
 }
 
 .memo-placeholder {
-    color: var(--text-secondary);
-    font-style: normal;
+    width: 100%;
+    word-break: keep-all;
 }
 
 /* ============================================
