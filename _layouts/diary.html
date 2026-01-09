@@ -51,21 +51,43 @@
         <div id="book-container" class="book-container">
             <!-- 좌측 페이지 -->
             <div class="page page-left" data-page="left">
-                <div class="photo-area">
-                    <div class="photo-placeholder">
-                        <svg class="camera-icon" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                            <circle cx="12" cy="13" r="4"></circle>
-                        </svg>
-                        <p class="placeholder-text">사진 삽입 영역</p>
+                <!-- 커버 레이어 (표지) -->
+                <div class="page-layer cover-layer" style="display: none;">
+                    <div class="cover-content">
+                        <div class="cover-title">
+                            <span class="sub">우리 아기</span>
+                            <span class="main">발음 성장<br>기록장</span>
+                        </div>
+                        <div class="cover-decoration">
+                            <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor" style="color: #558B2F; opacity: 0.8;">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </div>
+                        <div class="cover-name">
+                            <span class="label">기록</span>
+                            <span class="value">엄마, 아빠</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="memo-area">
-                    <p class="memo-placeholder">메모</p>
-                </div>
+                <!-- 콘텐츠 레이어 (사진/메모) -->
+                <div class="page-layer content-layer">
+                    <div class="photo-area">
+                        <div class="photo-placeholder">
+                            <svg class="camera-icon" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                            <p class="placeholder-text">사진 삽입 영역</p>
+                        </div>
+                    </div>
 
-                <div class="page-number" id="left-page-number">2</div>
+                    <div class="memo-area">
+                        <p class="memo-placeholder">메모</p>
+                    </div>
+
+                    <div class="page-number" id="left-page-number">2</div>
+                </div>
             </div>
 
             <!-- 중앙 제본 영역 -->
@@ -78,10 +100,30 @@
 
             <!-- 우측 페이지 -->
             <div class="page page-right" data-page="right">
-                <div id="word-list" class="word-list">
-                    <!-- JavaScript로 동적 생성 -->
+                <!-- 인트로 레이어 (프롤로그/목차) -->
+                <div class="page-layer intro-layer" style="display: none;">
+                    <div class="intro-content">
+                        <h3>프롤로그</h3>
+                        <div class="prologue-text" id="prologue-text">
+                            <!-- JS Inject -->
+                        </div>
+                        
+                        <div class="toc-section">
+                            <h3>목차</h3>
+                            <ul class="toc-list" id="toc-list">
+                                <!-- JS Inject -->
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="page-number" id="right-page-number">3</div>
+
+                <!-- 콘텐츠 레이어 (단어 목록) -->
+                <div class="page-layer content-layer">
+                    <div id="word-list" class="word-list">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                    <div class="page-number" id="right-page-number">3</div>
+                </div>
             </div>
         </div>
 

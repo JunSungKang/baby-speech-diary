@@ -84,6 +84,9 @@ function initializeElements() {
 // ============================================
 // 3. 데이터 파싱 (DOM 기반)
 // ============================================
+// ============================================
+// 3. 데이터 파싱 (DOM 기반)
+// ============================================
 /**
  * #markdown-content 내부의 HTML 요소들을 순회하며 Spread 데이터 추출
  */
@@ -95,45 +98,69 @@ function parseDataFromDOM() {
     }
 
     const spreads = [];
+    
+    // 0번 인덱스: 커버/프롤로그용 (가상의 스프레드)
+    // 실제 데이터는 "발음 성장 기록" H2 섹션에서 가져옴
+    const coverSpread = {
+        type: 'cover',
+        title: '표지',
+        prologue: '', // 추출할 텍스트
+        toc: [] // 목차 데이터
+    };
+    
     let currentSpread = null;
+    let isIntroSection = false;
 
     // content의 직계 자식 노드 순회
-    // content의 직계 자식 노드 순회
-    Array.from(content.children).forEach(node => {
-        // 1. 새로운 Spread 섹션 시작 (H2 태그)
+    Array.from(content.children).forEach((node, index) => {
+        // H2 태그 발견
         if (node.tagName === 'H2') {
-            if (currentSpread) {
-                spreads.push(currentSpread);
+            const title = node.textContent.trim();
+            
+            // 첫 번째 H2는 인트로(프롤로그)로 간주
+            if (spreads.length === 0 && !currentSpread) {
+                 isIntroSection = true;
+            } else {
+                 isIntroSection = false;
+                 // 기존 spread 저장
+                 if (currentSpread) spreads.push(currentSpread);
+                 
+                 // 새 spread 시작
+                 currentSpread = {
+                     type: 'content',
+                     title: title,
+                     memo: null,
+                     photo: null,
+                     words: []
+                 };
             }
-            currentSpread = {
-                title: node.textContent, // "Spread 1" 등
-                memo: null,
-                photo: null,
-                words: []
-            };
         }
         
-        // 2. 메타데이터 (P 태그 내 [메모:...], [사진:...])
-        else if (node.tagName === 'P' && currentSpread) {
+        // 인트로 섹션 내용 파싱 (프롤로그 텍스트 수집)
+        else if (isIntroSection && node.tagName === 'P') {
             const text = node.textContent.trim();
-            
-            // 메모 파싱 (여러 개가 같은 줄에 있을 수 있으므로 정규식 각각 체크)
-            const memoMatch = text.match(/\[메모:\s*(.*?)\]/);
-            if (memoMatch) {
-                currentSpread.memo = memoMatch[1].trim();
-            }
-            
-            // 사진 파싱
-            const photoMatch = text.match(/\[사진:\s*(.*?)\]/);
-            if (photoMatch) {
-                currentSpread.photo = photoMatch[1].trim();
+            if (text) {
+                coverSpread.prologue += text + '\n\n';
             }
         }
         
-        // 3. 단어 데이터 (Table 태그)
-        else if (node.tagName === 'TABLE' && currentSpread) {
-            const words = parseHTMLTable(node);
-            currentSpread.words = words;
+        // Spread 섹션 내용 파싱
+        else if (currentSpread) {
+            if (node.tagName === 'P') {
+                const text = node.textContent.trim();
+                
+                // 메모 파싱
+                const memoMatch = text.match(/\[메모:\s*(.*?)\]/);
+                if (memoMatch) currentSpread.memo = memoMatch[1].trim();
+                
+                // 사진 파싱
+                const photoMatch = text.match(/\[사진:\s*(.*?)\]/);
+                if (photoMatch) currentSpread.photo = photoMatch[1].trim();
+            }
+            else if (node.tagName === 'TABLE') {
+                const words = parseHTMLTable(node);
+                currentSpread.words = words;
+            }
         }
     });
 
@@ -141,11 +168,24 @@ function parseDataFromDOM() {
     if (currentSpread) {
         spreads.push(currentSpread);
     }
-
-    BookApp.spreads = spreads;
-    BookApp.totalSpreads = spreads.length;
     
-    console.log(`DOM 파싱 완료: ${BookApp.totalSpreads} spreads`);
+    // 목차 생성 (각 spread의 title 이용)
+    spreads.forEach((spread, idx) => {
+        coverSpread.toc.push({
+            title: spread.title,
+            page: (idx + 1) * 2 + 2 // 0->4p, 1->6p... (Cover is 2-3p) ? No. 
+            // Cover is 0 (Page 2-3 in UI logic? Or 0-1)
+            // Let's stick to logical page numbers:
+            // Spread 0 (Cover): p1, p2 (displayed as Cover)
+            // Spread 1: p3, p4
+        });
+    });
+
+    // 최종 배열: [Cover, Spread1, Spread2, ...]
+    BookApp.spreads = [coverSpread, ...spreads];
+    BookApp.totalSpreads = BookApp.spreads.length;
+    
+    console.log(`DOM 파싱 완료: ${BookApp.totalSpreads} spreads (Cover included)`);
 }
 
 /**
@@ -220,13 +260,11 @@ function openBookView() {
 }
 
 function closeBookView() {
-    if (BookApp.elements.bookView) BookApp.elements.bookView.classList.remove('active');
-    if (BookApp.elements.listView) BookApp.elements.listView.classList.add('active');
-    history.pushState(null, null, ' '); // hash 제거
+    // 기능 제거됨 (항상 Book View)
 }
 
 // ============================================
-// 5. 책 네비게이션 로직 (기존 로직 유지)
+// 5. 책 네비게이션 로직
 // ============================================
 
 function navigateToSpread(spreadIndex) {
@@ -255,9 +293,57 @@ function renderCurrentSpread() {
     if (!BookApp.spreads || BookApp.spreads.length === 0) return;
 
     const spreadData = BookApp.spreads[BookApp.currentSpreadIndex];
-    if (spreadData) {
+    if (!spreadData) return;
+
+    // UI 요소 찾기
+    const leftPage = BookApp.elements.leftPage;
+    const rightPage = BookApp.elements.rightPage;
+    
+    const coverLayer = leftPage.querySelector('.cover-layer');
+    const contentLayerLeft = leftPage.querySelector('.content-layer');
+    
+    const introLayer = rightPage.querySelector('.intro-layer');
+    const contentLayerRight = rightPage.querySelector('.content-layer');
+
+    // 1. 커버 페이지 (Index 0)
+    if (spreadData.type === 'cover') {
+        // 레이어 토글
+        if(coverLayer) coverLayer.style.display = 'flex';
+        if(contentLayerLeft) contentLayerLeft.style.display = 'none';
+        
+        if(introLayer) introLayer.style.display = 'block';
+        if(contentLayerRight) contentLayerRight.style.display = 'none';
+        
+        // 데이터 주입 (프롤로그/목차)
+        const prologueEl = document.getElementById('prologue-text');
+        if (prologueEl) prologueEl.textContent = spreadData.prologue;
+        
+        const tocEl = document.getElementById('toc-list');
+        if (tocEl) {
+            tocEl.innerHTML = spreadData.toc.map(item => `
+                <li>
+                    <span>${item.title}</span>
+                    <span>... p${item.page}</span>
+                </li>
+            `).join('');
+        }
+        
+    } 
+    // 2. 일반 콘텐츠 페이지 (Index 1+)
+    else {
+        // 레이어 토글
+        if(coverLayer) coverLayer.style.display = 'none';
+        if(contentLayerLeft) contentLayerLeft.style.display = 'flex'; // flex 주의
+        
+        if(introLayer) introLayer.style.display = 'none';
+        if(contentLayerRight) contentLayerRight.style.display = 'block'; // block/flex 주의 (기존 css 확인 필요)
+        // .page-right .content-layer 내부는 word-list (grid)임. content-layer 자체는 block이어도 됨.
+        
         // 단어 목록 렌더링
-        renderWordList(spreadData.words, (BookApp.currentSpreadIndex * BookApp.wordsPerPage) + 1);
+        // Index 0이 Cover이므로, Index 1이 첫 단어(1번) 시작.
+        // 공식: (CurrentIndex - 1) * 10 + 1
+        const startIndex = ((BookApp.currentSpreadIndex - 1) * BookApp.wordsPerPage) + 1;
+        renderWordList(spreadData.words, startIndex);
 
         // 메모 렌더링
         const memoEl = document.querySelector('.memo-area .memo-placeholder');
@@ -270,14 +356,15 @@ function renderCurrentSpread() {
         if (photoTextEl) {
             photoTextEl.textContent = spreadData.photo ? `사진: ${spreadData.photo}` : "사진 삽입 영역";
         }
-    }
-    
-    // 페이지 번호 업데이트
-    if (BookApp.elements.leftPageNumber) {
-        BookApp.elements.leftPageNumber.textContent = (BookApp.currentSpreadIndex * 2) + 2;
-    }
-    if (BookApp.elements.rightPageNumber) {
-        BookApp.elements.rightPageNumber.textContent = (BookApp.currentSpreadIndex * 2) + 3;
+        
+        // 페이지 번호 업데이트
+        // Spread 0: Cover (No number or specific)
+        // Spread 1: p2, p3 (Example)
+        const pLeft = BookApp.currentSpreadIndex * 2;
+        const pRight = BookApp.currentSpreadIndex * 2 + 1;
+        
+        if (BookApp.elements.leftPageNumber) BookApp.elements.leftPageNumber.textContent = pLeft;
+        if (BookApp.elements.rightPageNumber) BookApp.elements.rightPageNumber.textContent = pRight;
     }
     
     updateNavigation();
