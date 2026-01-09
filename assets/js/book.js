@@ -10,7 +10,7 @@ const BookApp = {
     currentSpreadIndex: 0,
     totalSpreads: 0,
     wordsPerPage: 10,
-    
+
     // UI Elements
     elements: {
         listView: null,
@@ -34,12 +34,12 @@ const BookApp = {
 // ============================================
 // 2. 초기화
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initializeElements();
     enhanceMarkdownTables(); // 리스트 뷰 테이블 스타일 개선
     parseDataFromDOM(); // HTML DOM에서 데이터 추출
     setupEventListeners();
-    
+
     // URL 해시 체크 제거 -> 항상 책 뷰 활성화
     renderCurrentSpread();
 });
@@ -77,7 +77,8 @@ function initializeElements() {
         leftPageNumber: document.getElementById('left-page-number'),
         rightPageNumber: document.getElementById('right-page-number'),
         prevBtn: document.getElementById('prev-btn'),
-        nextBtn: document.getElementById('next-btn')
+        nextBtn: document.getElementById('next-btn'),
+        btnCloseWarning: document.getElementById('btn-close-warning')
     };
 }
 
@@ -95,7 +96,7 @@ function parseDataFromDOM() {
     }
 
     const spreads = [];
-    
+
     // 0번 인덱스: 커버/프롤로그용 (가상의 스프레드)
     // 실제 데이터는 "발음 성장 기록" H2 섹션에서 가져옴
     const coverSpread = {
@@ -104,7 +105,7 @@ function parseDataFromDOM() {
         prologue: '', // 추출할 텍스트
         toc: [] // 목차 데이터
     };
-    
+
     let currentSpread = null;
     let isIntroSection = false;
 
@@ -113,29 +114,29 @@ function parseDataFromDOM() {
         // H2 태그 발견
         if (node.tagName === 'H2') {
             const title = node.textContent.trim();
-            
+
             // 첫 번째 H2는 인트로(프롤로그) 헤더인지 확인
             // 조건: 아직 Spread가 없고, Intro 모드 시작 전이라면 Intro H2로 간주
             if (spreads.length === 0 && !currentSpread && !isIntroSection) {
-                 isIntroSection = true;
+                isIntroSection = true;
             } else {
-                 // Intro 모드 종료, Content 모드 시작
-                 isIntroSection = false;
-                 
-                 // 기존 spread 저장
-                 if (currentSpread) spreads.push(currentSpread);
-                 
-                 // 새 spread 시작
-                 currentSpread = {
-                     type: 'content',
-                     title: title,
-                     memo: null,
-                     photo: null,
-                     words: []
-                 };
+                // Intro 모드 종료, Content 모드 시작
+                isIntroSection = false;
+
+                // 기존 spread 저장
+                if (currentSpread) spreads.push(currentSpread);
+
+                // 새 spread 시작
+                currentSpread = {
+                    type: 'content',
+                    title: title,
+                    memo: null,
+                    photo: null,
+                    words: []
+                };
             }
         }
-        
+
         // 인트로 섹션 내용 파싱 (프롤로그 텍스트 수집)
         // 주의: Intro 모드에서도 P 태그를 만나면 프롤로그에 추가
         else if (isIntroSection) {
@@ -147,16 +148,16 @@ function parseDataFromDOM() {
                 }
             }
         }
-        
+
         // Spread 섹션 내용 파싱
         else if (currentSpread) {
             if (node.tagName === 'P') {
                 const text = node.textContent.trim();
-                
+
                 // 메모 파싱
                 const memoMatch = text.match(/\[메모:\s*(.*?)\]/);
                 if (memoMatch) currentSpread.memo = memoMatch[1].trim();
-                
+
                 // 사진 파싱
                 const photoMatch = text.match(/\[사진:\s*(.*?)\]/);
                 if (photoMatch) currentSpread.photo = photoMatch[1].trim();
@@ -172,13 +173,13 @@ function parseDataFromDOM() {
     if (currentSpread) {
         spreads.push(currentSpread);
     }
-    
+
     // 목차 생성 제거 (사용자 요청)
 
     // 최종 배열: [Cover, Spread1, Spread2, ...]
     BookApp.spreads = [coverSpread, ...spreads];
     BookApp.totalSpreads = BookApp.spreads.length;
-    
+
     console.log(`DOM 파싱 완료: ${BookApp.totalSpreads} spreads (Cover included)`);
 }
 
@@ -188,24 +189,24 @@ function parseDataFromDOM() {
 function parseHTMLTable(table) {
     const words = [];
     const rows = table.querySelectorAll('tbody tr');
-    
+
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
         if (cells.length >= 2) {
             const word = cells[0].textContent.trim();
             const first = cells[1].textContent.trim();
             const developed = [];
-            
+
             // 3번째 컬럼부터는 발전 발음
             for (let i = 2; i < cells.length; i++) {
                 const text = cells[i].textContent.trim();
                 if (text) developed.push(text);
             }
-            
+
             words.push({ word, first, developed });
         }
     });
-    
+
     return words;
 }
 
@@ -223,32 +224,54 @@ function setupEventListeners() {
 
     // 키보드/마우스/버튼
     document.addEventListener('keydown', handleKeyboard);
-    
+
     if (BookApp.elements.leftPage) {
         BookApp.elements.leftPage.addEventListener('click', handleLeftPageClick);
     }
     if (BookApp.elements.rightPage) {
         BookApp.elements.rightPage.addEventListener('click', handleRightPageClick);
     }
-    
+
     if (BookApp.elements.prevBtn) {
         BookApp.elements.prevBtn.addEventListener('click', () => navigateToSpread(BookApp.currentSpreadIndex - 1));
     }
     if (BookApp.elements.nextBtn) {
         BookApp.elements.nextBtn.addEventListener('click', () => navigateToSpread(BookApp.currentSpreadIndex + 1));
     }
+
+    // 모바일 경고창 닫기 버튼 이벤트
+    if (BookApp.elements.btnCloseWarning) {
+        BookApp.elements.btnCloseWarning.addEventListener('click', closeMobileWarning);
+    }
+}
+
+function closeMobileWarning() {
+    const warningEl = document.getElementById('mobile-warning');
+    if (warningEl) {
+        warningEl.style.display = 'none';
+
+        // 닫기 버튼을 누르면 강제로 스크롤과 Book View를 활성화 (비상용)
+        document.body.style.overflow = 'auto'; // 스크롤 허용
+        /* 
+           주의: CSS에서 #book-view가 모바일에서 display: none일 수 있음.
+           하지만 사용자가 억지로 닫았다는 건 보겠다는 의지이므로,
+           CSS를 무시하고 강제로 보이게 할 수는 없으나(media query 우선),
+           최소한 경고창은 치워줌.
+           최소한 경고창은 치워줌.
+        */
+    }
 }
 
 function openBookView() {
     if (BookApp.elements.listView) BookApp.elements.listView.classList.remove('active');
     if (BookApp.elements.bookView) BookApp.elements.bookView.classList.add('active');
-    
+
     // 데이터가 파싱되지 않았으면 파시 시도 (혹시 모를 경우 대비)
     if (BookApp.spreads.length === 0) {
         parseDataFromDOM();
     }
-    
-    renderCurrentSpread(); 
+
+    renderCurrentSpread();
     history.pushState(null, null, '#book');
     window.scrollTo(0, 0);
 }
@@ -266,7 +289,7 @@ function navigateToSpread(spreadIndex) {
     if (BookApp.debounceTimer) {
         clearTimeout(BookApp.debounceTimer);
     }
-    
+
     BookApp.debounceTimer = setTimeout(() => {
         executeNavigation(spreadIndex);
     }, 50);
@@ -275,7 +298,7 @@ function navigateToSpread(spreadIndex) {
 function executeNavigation(spreadIndex) {
     if (spreadIndex < 0 || spreadIndex >= BookApp.totalSpreads) return;
     if (spreadIndex === BookApp.currentSpreadIndex) return;
-    
+
     BookApp.isTransitioning = true;
     BookApp.currentSpreadIndex = spreadIndex;
     renderCurrentSpread();
@@ -292,36 +315,40 @@ function renderCurrentSpread() {
     // UI 요소 찾기
     const leftPage = BookApp.elements.leftPage;
     const rightPage = BookApp.elements.rightPage;
-    
+
     const coverLayer = leftPage.querySelector('.cover-layer');
     const contentLayerLeft = leftPage.querySelector('.content-layer');
-    
+
     const introLayer = rightPage.querySelector('.intro-layer');
     const contentLayerRight = rightPage.querySelector('.content-layer');
 
     // 1. 커버 페이지 (Index 0)
     if (spreadData.type === 'cover') {
         // 레이어 토글
-        toggleLayer(coverLayer, true);
-        toggleLayer(contentLayerLeft, false);
-        
-        toggleLayer(introLayer, true);
-        toggleLayer(contentLayerRight, false);
-        
+        if (coverLayer) coverLayer.style.display = 'flex';
+        if (contentLayerLeft) contentLayerLeft.style.display = 'none';
+
+        if (introLayer) introLayer.style.display = 'block';
+        if (contentLayerRight) contentLayerRight.style.display = 'none';
+
         // 데이터 주입 (프롤로그/목차)
         const prologueEl = document.getElementById('prologue-text');
         if (prologueEl) prologueEl.textContent = spreadData.prologue;
-        
-    } 
+
+
+
+
+    }
     // 2. 일반 콘텐츠 페이지 (Index 1+)
     else {
         // 레이어 토글
-        toggleLayer(coverLayer, false);
-        toggleLayer(contentLayerLeft, true);
-        
-        toggleLayer(introLayer, false);
-        toggleLayer(contentLayerRight, true);
-        
+        if (coverLayer) coverLayer.style.display = 'none';
+        if (contentLayerLeft) contentLayerLeft.style.display = 'flex'; // flex 주의
+
+        if (introLayer) introLayer.style.display = 'none';
+        if (contentLayerRight) contentLayerRight.style.display = 'block'; // block/flex 주의 (기존 css 확인 필요)
+        // .page-right .content-layer 내부는 word-list (grid)임. content-layer 자체는 block이어도 됨.
+
         // 단어 목록 렌더링
         // Index 0이 Cover이므로, Index 1이 첫 단어(1번) 시작.
         // 공식: (CurrentIndex - 1) * 10 + 1
@@ -339,40 +366,24 @@ function renderCurrentSpread() {
         if (photoTextEl) {
             photoTextEl.textContent = spreadData.photo ? `사진: ${spreadData.photo}` : "사진 삽입 영역";
         }
-        
+
         // 페이지 번호 업데이트
         // Spread 0: Cover (No number or specific)
         // Spread 1: p2, p3 (Example)
         const pLeft = BookApp.currentSpreadIndex * 2;
         const pRight = BookApp.currentSpreadIndex * 2 + 1;
-        
+
         if (BookApp.elements.leftPageNumber) BookApp.elements.leftPageNumber.textContent = pLeft;
         if (BookApp.elements.rightPageNumber) BookApp.elements.rightPageNumber.textContent = pRight;
     }
-    
-    updateNavigation();
-}
 
-/**
- * 레이어 표시/숨김 토글 헬퍼 (인라인 스타일 제거 및 클래스 토글)
- */
-function toggleLayer(element, show) {
-    if (!element) return;
-    
-    // 인라인 스타일 제거
-    element.style.display = '';
-    
-    if (show) {
-        element.classList.add('active-layer');
-    } else {
-        element.classList.remove('active-layer');
-    }
+    updateNavigation();
 }
 
 function renderWordList(words, startIndex) {
     if (!BookApp.elements.wordList) return;
     BookApp.elements.wordList.innerHTML = '';
-    
+
     // 1. 실제 단어 렌더링
     words.forEach((wordData, index) => {
         const wordItem = createWordElement(wordData, startIndex + index);
@@ -395,12 +406,12 @@ function renderWordList(words, startIndex) {
 function createWordElement(wordData, number) {
     const div = document.createElement('div');
     div.className = 'word-item';
-    
+
     // Overflow 처리
     const totalPronunciations = 1 + wordData.developed.length;
     if (totalPronunciations >= 5) div.classList.add('overflow-5');
     else if (totalPronunciations >= 4) div.classList.add('overflow-4');
-    
+
     let html = `
         <div class="word-primary">
             <span class="word-number">${number}.</span>
@@ -411,7 +422,7 @@ function createWordElement(wordData, number) {
             <span class="word-text">${escapeHtml(wordData.first)}</span>
         </div>
     `;
-    
+
     wordData.developed.forEach(dev => {
         html += `
             <div class="word-tertiary">
@@ -437,7 +448,7 @@ function updateNavigation() {
     if (BookApp.elements.nextBtn) {
         BookApp.elements.nextBtn.disabled = BookApp.currentSpreadIndex === BookApp.totalSpreads - 1;
     }
-    
+
     // 첫/마지막 페이지 클래스 처리 (선택)
     if (BookApp.elements.leftPage) {
         if (BookApp.currentSpreadIndex === 0) BookApp.elements.leftPage.classList.add('first-page');
@@ -453,8 +464,8 @@ function updateNavigation() {
 function handleKeyboard(event) {
     if (!BookApp.elements.bookView.classList.contains('active')) return;
     if (BookApp.isTransitioning) return;
-    
-    switch(event.key) {
+
+    switch (event.key) {
         case 'ArrowRight': event.preventDefault(); navigateToSpread(BookApp.currentSpreadIndex + 1); break;
         case 'ArrowLeft': event.preventDefault(); navigateToSpread(BookApp.currentSpreadIndex - 1); break;
         case 'Home': event.preventDefault(); navigateToSpread(0); break;

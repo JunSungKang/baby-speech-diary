@@ -25,6 +25,8 @@
         <header>
             <h1>👶 아기 발음 기록장</h1>
             <p>우리 아기의 소중한 말들이 자라나는 기록</p>
+
+            <!-- 버튼 제거 -->
         </header>
 
         <main class="container">
@@ -37,6 +39,18 @@
 
     <!-- 책 뷰 (오버레이) -->
     <div id="book-view" class="view-mode active">
+        <!-- 모바일 미지원 안내 -->
+        <div id="mobile-warning" class="mobile-warning">
+            <div class="warning-content">
+                <h2>📱 화면 크기 안내</h2>
+                <p>이 서비스는 <strong>태블릿 이상 화면</strong>에 최적화되어 있습니다.</p>
+                <p>더 나은 경험을 위해 화면을 가로로 회전하거나<br>더 큰 화면에서 이용해주세요.</p>
+                <button id="btn-close-warning" class="close-btn">닫기</button>
+            </div>
+        </div>
+
+
+
         <!-- 책 컨테이너 -->
         <div id="book-container" class="book-container">
             <!-- 좌측 페이지 -->
