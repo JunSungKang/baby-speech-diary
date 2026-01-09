@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아기 발음 기록장</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Quicksand:wght@400;600&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/css/book.css" | relative_url }}">
+    
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
+</head>
+<body>
+
+    <!-- 일반 리스트 뷰 (기본) -->
+    <div id="list-view" class="view-mode active">
+        <header>
+            <h1>👶 아기 발음 기록장</h1>
+            <p>우리 아기의 소중한 말들이 자라나는 기록</p>
+            
+            <button id="btn-open-book" class="view-toggle-btn">
+                📖 책으로 보기
+            </button>
+        </header>
+
+        <main class="container">
+            <!-- Jekyll Content (HTML 렌더링 됨) -->
+            <div id="markdown-content">
+                {{ content }}
+            </div>
+        </main>
+    </div>
+
+    <!-- 책 뷰 (오버레이) -->
+    <div id="book-view" class="view-mode">
+        <!-- 모바일 미지원 안내 -->
+        <div id="mobile-warning" class="mobile-warning">
+            <div class="warning-content">
+                <h2>📱 화면 크기 안내</h2>
+                <p>이 서비스는 <strong>태블릿 이상 화면</strong>에 최적화되어 있습니다.</p>
+                <p>더 나은 경험을 위해 화면을 가로로 회전하거나<br>더 큰 화면에서 이용해주세요.</p>
+                <button id="btn-close-warning" class="close-btn">닫기</button>
+            </div>
+        </div>
+
+        <div class="book-overlay-header">
+            <button id="btn-close-book" class="close-book-btn">
+                ✕ 닫기
+            </button>
+        </div>
+
+        <!-- 책 컨테이너 -->
+        <div id="book-container" class="book-container">
+            <!-- 좌측 페이지 -->
+            <div class="page page-left" data-page="left">
+                <div class="photo-area">
+                    <div class="photo-placeholder">
+                        <svg class="camera-icon" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <p class="placeholder-text">사진 삽입 영역</p>
+                    </div>
+                </div>
+
+                <div class="memo-area">
+                    <p class="memo-placeholder">메모</p>
+                </div>
+
+                <div class="page-number" id="left-page-number">2</div>
+            </div>
+
+            <!-- 중앙 제본 영역 -->
+            <div class="binding-area">
+                <div class="spring-ring"></div><div class="spring-ring"></div><div class="spring-ring"></div>
+                <div class="spring-ring"></div><div class="spring-ring"></div><div class="spring-ring"></div>
+                <div class="spring-ring"></div><div class="spring-ring"></div><div class="spring-ring"></div>
+                <div class="spring-ring"></div><div class="spring-ring"></div><div class="spring-ring"></div>
+            </div>
+
+            <!-- 우측 페이지 -->
+            <div class="page page-right" data-page="right">
+                <div id="word-list" class="word-list">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+                <div class="page-number" id="right-page-number">3</div>
+            </div>
+        </div>
+
+        <!-- 페이지 전환 컨트롤 -->
+        <div class="page-controls">
+            <button id="prev-btn" class="control-btn" aria-label="이전 페이지">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>이전</span>
+            </button>
+            <button id="next-btn" class="control-btn" aria-label="다음 페이지">
+                <span>다음</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="{{ "/assets/js/book.js" | relative_url }}"></script>
+</body>
+</html>

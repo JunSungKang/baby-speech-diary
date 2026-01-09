@@ -237,3 +237,94 @@ blockquote {
         padding: 20px;
     }
 }
+
+/* =========================================
+   View Toggle & Layout Styles
+   ========================================= */
+
+/* 기본 뷰 모드 제어 */
+.view-mode {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.view-mode.active {
+    display: block;
+}
+
+/* 책 뷰 모드 스타일 (Full Screen Overlay) */
+#book-view.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px;
+}
+
+/* 책으로 보기 버튼 */
+.view-toggle-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #8BC34A 0%, #558B2F 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 12px rgba(85, 139, 47, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.view-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(85, 139, 47, 0.4);
+}
+
+/* 책 닫기 버튼 */
+.book-overlay-header {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.close-book-btn {
+    background: white;
+    border: 2px solid var(--border-line);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.close-book-btn:hover {
+    background: #f1f1f1;
+}
+
+/* markdown-content 내부 스타일 보정 (리스트 뷰) */
+#markdown-content h2 {
+    /* Spread 헤더 숨기기 (리스트 뷰에서는 불필요할 수 있으나 유지는 함) */
+    background: #f1f8e9;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    color: #558b2f;
+    border-bottom: none;
+}
+
+#markdown-content p {
+    /* 메타데이터(메모, 사진) 숨김 처리? 원하면 보이게 해도 됨 */
+    color: #666;
+}
