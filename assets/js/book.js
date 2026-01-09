@@ -84,9 +84,6 @@ function initializeElements() {
 // ============================================
 // 3. 데이터 파싱 (DOM 기반)
 // ============================================
-// ============================================
-// 3. 데이터 파싱 (DOM 기반)
-// ============================================
 /**
  * #markdown-content 내부의 HTML 요소들을 순회하며 Spread 데이터 추출
  */
@@ -305,28 +302,25 @@ function renderCurrentSpread() {
     // 1. 커버 페이지 (Index 0)
     if (spreadData.type === 'cover') {
         // 레이어 토글
-        if(coverLayer) coverLayer.style.display = 'flex';
-        if(contentLayerLeft) contentLayerLeft.style.display = 'none';
+        toggleLayer(coverLayer, true);
+        toggleLayer(contentLayerLeft, false);
         
-        if(introLayer) introLayer.style.display = 'block';
-        if(contentLayerRight) contentLayerRight.style.display = 'none';
+        toggleLayer(introLayer, true);
+        toggleLayer(contentLayerRight, false);
         
         // 데이터 주입 (프롤로그/목차)
         const prologueEl = document.getElementById('prologue-text');
         if (prologueEl) prologueEl.textContent = spreadData.prologue;
         
-
-        
     } 
     // 2. 일반 콘텐츠 페이지 (Index 1+)
     else {
         // 레이어 토글
-        if(coverLayer) coverLayer.style.display = 'none';
-        if(contentLayerLeft) contentLayerLeft.style.display = 'flex'; // flex 주의
+        toggleLayer(coverLayer, false);
+        toggleLayer(contentLayerLeft, true);
         
-        if(introLayer) introLayer.style.display = 'none';
-        if(contentLayerRight) contentLayerRight.style.display = 'block'; // block/flex 주의 (기존 css 확인 필요)
-        // .page-right .content-layer 내부는 word-list (grid)임. content-layer 자체는 block이어도 됨.
+        toggleLayer(introLayer, false);
+        toggleLayer(contentLayerRight, true);
         
         // 단어 목록 렌더링
         // Index 0이 Cover이므로, Index 1이 첫 단어(1번) 시작.
@@ -357,6 +351,22 @@ function renderCurrentSpread() {
     }
     
     updateNavigation();
+}
+
+/**
+ * 레이어 표시/숨김 토글 헬퍼 (인라인 스타일 제거 및 클래스 토글)
+ */
+function toggleLayer(element, show) {
+    if (!element) return;
+    
+    // 인라인 스타일 제거
+    element.style.display = '';
+    
+    if (show) {
+        element.classList.add('active-layer');
+    } else {
+        element.classList.remove('active-layer');
+    }
 }
 
 function renderWordList(words, startIndex) {
