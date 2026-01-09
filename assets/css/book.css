@@ -29,8 +29,8 @@
     --hover-shadow: rgba(0, 0, 0, 0.15);
 
     /* 크기 */
-    --book-max-width: 1200px;
-    --book-max-height: 848px;
+    --book-max-width: 1100px;
+    --book-max-height: 760px;
     --page-padding: 40px;
     --binding-width: 5%;
     --page-width: 47.5%;
@@ -722,21 +722,27 @@ body {
 
     .page {
         width: 100% !important;
-        height: auto !important;
-        min-height: 400px;
+        height: 100% !important;
+        min-height: 500px;
         padding: 30px 20px;
-        margin-bottom: 20px;
+        margin-bottom: 0;
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: none !important;
         cursor: default !important;
         background-size: 5mm 5mm;
         /* 모바일에서는 그리드 작게 */
+        display: none !important;
+        /* 기본적으로 모두 숨김 */
+    }
+
+    .page.active-mobile {
+        display: flex !important;
+        /* 활성화된 페이지만 표시 */
     }
 
     .page-left:hover,
     .page-right:hover {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        /* 호버 효과 제거 대신 기본 유지 */
+        box-shadow: none !important;
     }
 
     /* 중앙 제본 영역 숨김 (모바일) */

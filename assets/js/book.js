@@ -8,6 +8,7 @@
 const BookApp = {
     spreads: [], // { memo: string, photo: string, words: Array }
     currentSpreadIndex: 0,
+    currentSide: 'left', // 'left' or 'right' (모바일 전용)
     totalSpreads: 0,
     wordsPerPage: 10,
 
@@ -59,6 +60,11 @@ function initializeElements() {
         prevBtn: document.getElementById('prev-btn'),
         nextBtn: document.getElementById('next-btn')
     };
+}
+
+// 모바일 모드 체크 (768px 미만)
+function isMobileMode() {
+    return window.innerWidth < 768;
 }
 
 // ============================================
@@ -135,11 +141,40 @@ function setupEventListeners() {
     }
 
     if (BookApp.elements.prevBtn) {
-        BookApp.elements.prevBtn.addEventListener('click', () => navigateToSpread(BookApp.currentSpreadIndex - 1));
+        BookApp.elements.prevBtn.addEventListener('click', () => navigateRelative(-1));
     }
     if (BookApp.elements.nextBtn) {
-        BookApp.elements.nextBtn.addEventListener('click', () => navigateToSpread(BookApp.currentSpreadIndex + 1));
+        BookApp.elements.nextBtn.addEventListener('click', () => navigateRelative(1));
     }
+}
+
+function navigateRelative(direction) {
+    if (isMobileMode()) {
+        if (direction > 0) {
+            // Next
+            if (BookApp.currentSide === 'left') {
+                BookApp.currentSide = 'right';
+            } else if (BookApp.currentSpreadIndex < BookApp.totalSpreads - 1) {
+                BookApp.currentSpreadIndex++;
+                BookApp.currentSide = 'left';
+            }
+        } else {
+            // Prev
+            if (BookApp.currentSide === 'right') {
+                BookApp.currentSide = 'left';
+            } else if (BookApp.currentSpreadIndex > 0) {
+                BookApp.currentSpreadIndex--;
+                BookApp.currentSide = 'right';
+            }
+        }
+    } else {
+        // PC 모드
+        const target = BookApp.currentSpreadIndex + direction;
+        if (target >= 0 && target < BookApp.totalSpreads) {
+            BookApp.currentSpreadIndex = target;
+        }
+    }
+    renderCurrentSpread();
 }
 
 function openBookView() {
@@ -251,6 +286,20 @@ function renderCurrentSpread() {
         if (BookApp.elements.rightPageNumber) BookApp.elements.rightPageNumber.textContent = pRight;
     }
 
+    // 모바일 전용 클래스 토글
+    if (isMobileMode()) {
+        if (BookApp.currentSide === 'left') {
+            leftPage.classList.add('active-mobile');
+            rightPage.classList.remove('active-mobile');
+        } else {
+            leftPage.classList.remove('active-mobile');
+            rightPage.classList.add('active-mobile');
+        }
+    } else {
+        leftPage.classList.remove('active-mobile');
+        rightPage.classList.remove('active-mobile');
+    }
+
     updateNavigation();
 }
 
@@ -319,20 +368,28 @@ function escapeHtml(text) {
 }
 
 function updateNavigation() {
+    const isFirst = isMobileMode()
+        ? (BookApp.currentSpreadIndex === 0 && BookApp.currentSide === 'left')
+        : (BookApp.currentSpreadIndex === 0);
+
+    const isLast = isMobileMode()
+        ? (BookApp.currentSpreadIndex === BookApp.totalSpreads - 1 && BookApp.currentSide === 'right')
+        : (BookApp.currentSpreadIndex === BookApp.totalSpreads - 1);
+
     if (BookApp.elements.prevBtn) {
-        BookApp.elements.prevBtn.disabled = BookApp.currentSpreadIndex === 0;
+        BookApp.elements.prevBtn.disabled = isFirst;
     }
     if (BookApp.elements.nextBtn) {
-        BookApp.elements.nextBtn.disabled = BookApp.currentSpreadIndex === BookApp.totalSpreads - 1;
+        BookApp.elements.nextBtn.disabled = isLast;
     }
 
-    // 첫/마지막 페이지 클래스 처리 (선택)
+    // 첫/마지막 페이지 도달 시 시각적 표시 (클래스 토글)
     if (BookApp.elements.leftPage) {
-        if (BookApp.currentSpreadIndex === 0) BookApp.elements.leftPage.classList.add('first-page');
+        if (isFirst) BookApp.elements.leftPage.classList.add('first-page');
         else BookApp.elements.leftPage.classList.remove('first-page');
     }
     if (BookApp.elements.rightPage) {
-        if (BookApp.currentSpreadIndex === BookApp.totalSpreads - 1) BookApp.elements.rightPage.classList.add('last-page');
+        if (isLast) BookApp.elements.rightPage.classList.add('last-page');
         else BookApp.elements.rightPage.classList.remove('last-page');
     }
 }
@@ -343,20 +400,20 @@ function handleKeyboard(event) {
     if (BookApp.isTransitioning) return;
 
     switch (event.key) {
-        case 'ArrowRight': event.preventDefault(); navigateToSpread(BookApp.currentSpreadIndex + 1); break;
-        case 'ArrowLeft': event.preventDefault(); navigateToSpread(BookApp.currentSpreadIndex - 1); break;
-        case 'Home': event.preventDefault(); navigateToSpread(0); break;
-        case 'End': event.preventDefault(); navigateToSpread(BookApp.totalSpreads - 1); break;
+        case 'ArrowRight': event.preventDefault(); navigateRelative(1); break;
+        case 'ArrowLeft': event.preventDefault(); navigateRelative(-1); break;
+        case 'Home': event.preventDefault(); BookApp.currentSpreadIndex = 0; BookApp.currentSide = 'left'; renderCurrentSpread(); break;
+        case 'End': event.preventDefault(); BookApp.currentSpreadIndex = BookApp.totalSpreads - 1; BookApp.currentSide = 'right'; renderCurrentSpread(); break;
         case 'Escape': closeBookView(); break;
     }
 }
 
 function handleLeftPageClick(event) {
     if (BookApp.isTransitioning) return;
-    if (BookApp.currentSpreadIndex > 0) navigateToSpread(BookApp.currentSpreadIndex - 1);
+    navigateRelative(-1);
 }
 
 function handleRightPageClick(event) {
     if (BookApp.isTransitioning) return;
-    if (BookApp.currentSpreadIndex < BookApp.totalSpreads - 1) navigateToSpread(BookApp.currentSpreadIndex + 1);
+    navigateRelative(1);
 }
