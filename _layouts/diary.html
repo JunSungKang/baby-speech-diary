@@ -12,30 +12,13 @@
         rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ " /assets/css/style.css" | relative_url }}">
-    <link rel="stylesheet" href="{{ " /assets/css/book.css" | relative_url }}">
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/book.css">
 
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
 </head>
 
 <body>
-
-    <!-- 일반 리스트 뷰 (숨김, 데이터 파싱용) -->
-    <div id="list-view" class="view-mode" style="display: none;">
-        <header>
-            <h1>👶 아기 발음 기록장</h1>
-            <p>우리 아기의 소중한 말들이 자라나는 기록</p>
-
-            <!-- 버튼 제거 -->
-        </header>
-
-        <main class="container">
-            <!-- Jekyll Content (HTML 렌더링 됨) -->
-            <div id="markdown-content">
-                {{ content }}
-            </div>
-        </main>
-    </div>
 
     <!-- 책 뷰 (오버레이) -->
     <div id="book-view" class="view-mode active">
@@ -49,14 +32,12 @@
             </div>
         </div>
 
-
-
         <!-- 책 컨테이너 -->
         <div id="book-container" class="book-container">
             <!-- 좌측 페이지 -->
             <div class="page page-left" data-page="left">
-                <!-- 커버 레이어 (표지) -->
-                <div class="page-layer cover-layer" style="display: none;">
+                <!-- 커버 레이어 (표지) - 초기값: 보임 -->
+                <div class="page-layer cover-layer" style="display: flex;">
                     <div class="cover-content">
                         <div class="cover-title">
                             <span class="sub">우리 아가</span>
@@ -76,8 +57,8 @@
                     </div>
                 </div>
 
-                <!-- 콘텐츠 레이어 (사진/메모) -->
-                <div class="page-layer content-layer">
+                <!-- 콘텐츠 레이어 (사진/메모) - 초기값: 숨김 -->
+                <div class="page-layer content-layer" style="display: none;">
                     <div class="photo-area">
                         <div class="photo-placeholder">
                             <svg class="camera-icon" width="60" height="60" viewBox="0 0 24 24" fill="none"
@@ -95,7 +76,7 @@
                         <p class="memo-placeholder">메모</p>
                     </div>
 
-                    <div class="page-number" id="left-page-number">2</div>
+                    <div class="page-number" id="left-page-number"></div>
                 </div>
             </div>
 
@@ -117,8 +98,8 @@
 
             <!-- 우측 페이지 -->
             <div class="page page-right" data-page="right">
-                <!-- 인트로 레이어 (프롤로그/출생정보) -->
-                <div class="page-layer intro-layer" style="display: none;">
+                <!-- 인트로 레이어 (프롤로그/출생정보) - 초기값: 보임 -->
+                <div class="page-layer intro-layer" style="display: block;">
                     <div class="intro-content">
                         <h3>엄마 아빠가 보내는 편지 💌</h3>
                         <div class="prologue-text" id="prologue-text">
@@ -149,12 +130,12 @@
                     </div>
                 </div>
 
-                <!-- 콘텐츠 레이어 (단어 목록) -->
-                <div class="page-layer content-layer">
+                <!-- 콘텐츠 레이어 (단어 목록) - 초기값: 숨김 -->
+                <div class="page-layer content-layer" style="display: none;">
                     <div id="word-list" class="word-list">
                         <!-- JavaScript로 동적 생성 -->
                     </div>
-                    <div class="page-number" id="right-page-number">3</div>
+                    <div class="page-number" id="right-page-number"></div>
                 </div>
             </div>
         </div>
@@ -180,7 +161,7 @@
     <script type="application/json" id="speech-data">
         {{ site.data.speech | jsonify }}
     </script>
-    <script src="{{ " /assets/js/book.js" | relative_url }}"></script>
+    <script src="{{ site.baseurl }}/assets/js/book.js"></script>
 </body>
 
 </html>
