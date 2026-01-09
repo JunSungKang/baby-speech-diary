@@ -117,11 +117,14 @@ function parseDataFromDOM() {
         if (node.tagName === 'H2') {
             const title = node.textContent.trim();
             
-            // 첫 번째 H2는 인트로(프롤로그)로 간주
-            if (spreads.length === 0 && !currentSpread) {
+            // 첫 번째 H2는 인트로(프롤로그) 헤더인지 확인
+            // 조건: 아직 Spread가 없고, Intro 모드 시작 전이라면 Intro H2로 간주
+            if (spreads.length === 0 && !currentSpread && !isIntroSection) {
                  isIntroSection = true;
             } else {
+                 // Intro 모드 종료, Content 모드 시작
                  isIntroSection = false;
+                 
                  // 기존 spread 저장
                  if (currentSpread) spreads.push(currentSpread);
                  
@@ -137,10 +140,14 @@ function parseDataFromDOM() {
         }
         
         // 인트로 섹션 내용 파싱 (프롤로그 텍스트 수집)
-        else if (isIntroSection && node.tagName === 'P') {
-            const text = node.textContent.trim();
-            if (text) {
-                coverSpread.prologue += text + '\n\n';
+        // 주의: Intro 모드에서도 P 태그를 만나면 프롤로그에 추가
+        else if (isIntroSection) {
+            if (node.tagName === 'P') {
+                const text = node.textContent.trim();
+                // 단순 텍스트만 수집 (메타데이터 태그 제외)
+                if (text && !text.startsWith('[')) {
+                    coverSpread.prologue += text + '\n\n';
+                }
             }
         }
         
@@ -169,17 +176,7 @@ function parseDataFromDOM() {
         spreads.push(currentSpread);
     }
     
-    // 목차 생성 (각 spread의 title 이용)
-    spreads.forEach((spread, idx) => {
-        coverSpread.toc.push({
-            title: spread.title,
-            page: (idx + 1) * 2 + 2 // 0->4p, 1->6p... (Cover is 2-3p) ? No. 
-            // Cover is 0 (Page 2-3 in UI logic? Or 0-1)
-            // Let's stick to logical page numbers:
-            // Spread 0 (Cover): p1, p2 (displayed as Cover)
-            // Spread 1: p3, p4
-        });
-    });
+    // 목차 생성 제거 (사용자 요청)
 
     // 최종 배열: [Cover, Spread1, Spread2, ...]
     BookApp.spreads = [coverSpread, ...spreads];
@@ -318,15 +315,7 @@ function renderCurrentSpread() {
         const prologueEl = document.getElementById('prologue-text');
         if (prologueEl) prologueEl.textContent = spreadData.prologue;
         
-        const tocEl = document.getElementById('toc-list');
-        if (tocEl) {
-            tocEl.innerHTML = spreadData.toc.map(item => `
-                <li>
-                    <span>${item.title}</span>
-                    <span>... p${item.page}</span>
-                </li>
-            `).join('');
-        }
+
         
     } 
     // 2. 일반 콘텐츠 페이지 (Index 1+)

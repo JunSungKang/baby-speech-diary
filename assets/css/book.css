@@ -621,24 +621,47 @@ body {
     margin-bottom: 40px;
     white-space: pre-line; /* 줄바꿈 보존 */
     font-family: 'Nanum Pen Script', cursive;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+}
+
+/* 프로필 (출생 정보) 스타일 */
+.profile-section {
+    margin-top: 20px;
+}
+
+.profile-list {
+    list-style: none;
+    padding: 0;
+    background: rgba(85, 139, 47, 0.05); /* 연한 초록 배경 */
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.profile-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.profile-list li:last-child {
+    border-bottom: none;
+}
+
+.profile-list .label {
+    font-size: 0.95rem;
+    color: var(--text-tertiary);
+    font-weight: 600;
+}
+
+.profile-list .value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-family: 'Gowun Dodum', sans-serif;
 }
 
 .toc-list {
-    list-style: none;
-    padding: 0;
-}
-
-.toc-list li {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    padding: 8px 0;
-    border-bottom: 1px dashed var(--border-line);
-    display: flex;
-    justify-content: space-between;
-}
-
-.toc-list li span:last-child {
-    font-weight: bold;
-    color: var(--text-tertiary);
+    display: none; /* 목차 숨김 */
 }
