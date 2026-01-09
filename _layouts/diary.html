@@ -176,6 +176,10 @@
         </div>
     </div>
 
+    <!-- Data Injection (Prevent IDE syntax errors) -->
+    <script type="application/json" id="speech-data">
+        {{ site.data.speech | jsonify }}
+    </script>
     <script src="{{ " /assets/js/book.js" | relative_url }}"></script>
 </body>
 

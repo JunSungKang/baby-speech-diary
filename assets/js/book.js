@@ -1,5 +1,5 @@
 /**
- * 책 레이아웃 로직 (DOM 파싱 및 뷰 토글 지원)
+ * 책 레이아웃 로직 (JSON 데이터 파싱 및 뷰 토글 지원)
  */
 
 // ============================================
@@ -24,7 +24,8 @@ const BookApp = {
         leftPageNumber: null,
         rightPageNumber: null,
         prevBtn: null,
-        nextBtn: null
+        nextBtn: null,
+        btnCloseWarning: null
     },
 
     isTransitioning: false,
@@ -36,33 +37,13 @@ const BookApp = {
 // ============================================
 document.addEventListener('DOMContentLoaded', function () {
     initializeElements();
-    enhanceMarkdownTables(); // 리스트 뷰 테이블 스타일 개선
-    parseDataFromDOM(); // HTML DOM에서 데이터 추출
+    parseDataFromDOM(); // 이름은 유지하되 내부는 JSON 처리로 변경
     setupEventListeners();
 
     // URL 해시 체크 제거 -> 항상 책 뷰 활성화
     renderCurrentSpread();
 });
 
-/**
- * 리스트 뷰의 테이블을 반응형 카드 스타일로 변환
- */
-function enhanceMarkdownTables() {
-    const tables = document.querySelectorAll('#markdown-content table');
-    tables.forEach(table => {
-        table.classList.add('card-table');
-        const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
-        const rows = table.querySelectorAll('tbody tr');
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            cells.forEach((cell, index) => {
-                if (headers[index]) {
-                    cell.setAttribute('data-label', headers[index]);
-                }
-            });
-        });
-    });
-}
 
 function initializeElements() {
     BookApp.elements = {
@@ -83,131 +64,54 @@ function initializeElements() {
 }
 
 // ============================================
-// 3. 데이터 파싱 (DOM 기반)
+// 3. 데이터 파싱 (JSON 기반)
 // ============================================
 /**
- * #markdown-content 내부의 HTML 요소들을 순회하며 Spread 데이터 추출
+ * speech.json 데이터를 Script 태그에서 파싱 (IDE 에러 방지)
  */
 function parseDataFromDOM() {
-    const content = document.getElementById('markdown-content');
-    if (!content) {
-        console.warn('#markdown-content element not found');
+    const dataEl = document.getElementById('speech-data');
+    if (!dataEl) {
+        console.warn('#speech-data element not found');
         return;
     }
 
-    const spreads = [];
-
-    // 0번 인덱스: 커버/프롤로그용 (가상의 스프레드)
-    // 실제 데이터는 "발음 성장 기록" H2 섹션에서 가져옴
-    const coverSpread = {
-        type: 'cover',
-        title: '표지',
-        prologue: '', // 추출할 텍스트
-        toc: [] // 목차 데이터
-    };
-
-    let currentSpread = null;
-    let isIntroSection = false;
-
-    // content의 직계 자식 노드 순회
-    Array.from(content.children).forEach((node, index) => {
-        // H2 태그 발견
-        if (node.tagName === 'H2') {
-            const title = node.textContent.trim();
-
-            // 첫 번째 H2는 인트로(프롤로그) 헤더인지 확인
-            // 조건: 아직 Spread가 없고, Intro 모드 시작 전이라면 Intro H2로 간주
-            if (spreads.length === 0 && !currentSpread && !isIntroSection) {
-                isIntroSection = true;
-            } else {
-                // Intro 모드 종료, Content 모드 시작
-                isIntroSection = false;
-
-                // 기존 spread 저장
-                if (currentSpread) spreads.push(currentSpread);
-
-                // 새 spread 시작
-                currentSpread = {
-                    type: 'content',
-                    title: title,
-                    memo: null,
-                    photo: null,
-                    words: []
-                };
-            }
-        }
-
-        // 인트로 섹션 내용 파싱 (프롤로그 텍스트 수집)
-        // 주의: Intro 모드에서도 P 태그를 만나면 프롤로그에 추가
-        else if (isIntroSection) {
-            if (node.tagName === 'P') {
-                const text = node.textContent.trim();
-                // 단순 텍스트만 수집 (메타데이터 태그 제외)
-                if (text && !text.startsWith('[')) {
-                    coverSpread.prologue += text + '\n\n';
-                }
-            }
-        }
-
-        // Spread 섹션 내용 파싱
-        else if (currentSpread) {
-            if (node.tagName === 'P') {
-                const text = node.textContent.trim();
-
-                // 메모 파싱
-                const memoMatch = text.match(/\[메모:\s*(.*?)\]/);
-                if (memoMatch) currentSpread.memo = memoMatch[1].trim();
-
-                // 사진 파싱
-                const photoMatch = text.match(/\[사진:\s*(.*?)\]/);
-                if (photoMatch) currentSpread.photo = photoMatch[1].trim();
-            }
-            else if (node.tagName === 'TABLE') {
-                const words = parseHTMLTable(node);
-                currentSpread.words = words;
-            }
-        }
-    });
-
-    // 마지막 Spread 추가
-    if (currentSpread) {
-        spreads.push(currentSpread);
+    let rawData;
+    try {
+        rawData = JSON.parse(dataEl.textContent);
+    } catch (e) {
+        console.error('Failed to parse speech data', e);
+        return;
     }
 
-    // 목차 생성 제거 (사용자 요청)
+    if (!Array.isArray(rawData)) {
+        console.warn('speechData is invalid');
+        return;
+    }
 
-    // 최종 배열: [Cover, Spread1, Spread2, ...]
-    BookApp.spreads = [coverSpread, ...spreads];
-    BookApp.totalSpreads = BookApp.spreads.length;
-
-    console.log(`DOM 파싱 완료: ${BookApp.totalSpreads} spreads (Cover included)`);
-}
-
-/**
- * HTML Table 요소를 파싱하여 단어 배열 반환
- */
-function parseHTMLTable(table) {
-    const words = [];
-    const rows = table.querySelectorAll('tbody tr');
-
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length >= 2) {
-            const word = cells[0].textContent.trim();
-            const first = cells[1].textContent.trim();
-            const developed = [];
-
-            // 3번째 컬럼부터는 발전 발음
-            for (let i = 2; i < cells.length; i++) {
-                const text = cells[i].textContent.trim();
-                if (text) developed.push(text);
-            }
-
-            words.push({ word, first, developed });
+    // 데이터 검증 및 변환
+    BookApp.spreads = rawData.map(item => {
+        // 커버 타입
+        if (item.type === 'cover') {
+            return {
+                type: 'cover',
+                title: item.title || '표지',
+                prologue: item.prologue || '',
+                toc: []
+            };
         }
+        // 콘텐츠 타입
+        return {
+            type: 'content',
+            title: `Spread ${item.id}`,
+            memo: item.memo,
+            photo: item.photo,
+            words: item.words || []
+        };
     });
 
-    return words;
+    BookApp.totalSpreads = BookApp.spreads.length;
+    console.log(`데이터 로드 완료: ${BookApp.totalSpreads} spreads`);
 }
 
 // ============================================
@@ -249,16 +153,7 @@ function closeMobileWarning() {
     const warningEl = document.getElementById('mobile-warning');
     if (warningEl) {
         warningEl.style.display = 'none';
-
-        // 닫기 버튼을 누르면 강제로 스크롤과 Book View를 활성화 (비상용)
         document.body.style.overflow = 'auto'; // 스크롤 허용
-        /* 
-           주의: CSS에서 #book-view가 모바일에서 display: none일 수 있음.
-           하지만 사용자가 억지로 닫았다는 건 보겠다는 의지이므로,
-           CSS를 무시하고 강제로 보이게 할 수는 없으나(media query 우선),
-           최소한 경고창은 치워줌.
-           최소한 경고창은 치워줌.
-        */
     }
 }
 
@@ -267,7 +162,7 @@ function openBookView() {
     if (BookApp.elements.bookView) BookApp.elements.bookView.classList.add('active');
 
     // 데이터가 파싱되지 않았으면 파시 시도 (혹시 모를 경우 대비)
-    if (BookApp.spreads.length === 0) {
+    if (!BookApp.spreads || BookApp.spreads.length === 0) {
         parseDataFromDOM();
     }
 
@@ -333,10 +228,7 @@ function renderCurrentSpread() {
 
         // 데이터 주입 (프롤로그/목차)
         const prologueEl = document.getElementById('prologue-text');
-        if (prologueEl) prologueEl.textContent = spreadData.prologue;
-
-
-
+        if (prologueEl) prologueEl.innerText = spreadData.prologue; // textContent -> innerText (줄바꿈 지원)
 
     }
     // 2. 일반 콘텐츠 페이지 (Index 1+)
@@ -347,7 +239,6 @@ function renderCurrentSpread() {
 
         if (introLayer) introLayer.style.display = 'none';
         if (contentLayerRight) contentLayerRight.style.display = 'block'; // block/flex 주의 (기존 css 확인 필요)
-        // .page-right .content-layer 내부는 word-list (grid)임. content-layer 자체는 block이어도 됨.
 
         // 단어 목록 렌더링
         // Index 0이 Cover이므로, Index 1이 첫 단어(1번) 시작.
@@ -368,8 +259,6 @@ function renderCurrentSpread() {
         }
 
         // 페이지 번호 업데이트
-        // Spread 0: Cover (No number or specific)
-        // Spread 1: p2, p3 (Example)
         const pLeft = BookApp.currentSpreadIndex * 2;
         const pRight = BookApp.currentSpreadIndex * 2 + 1;
 
@@ -408,7 +297,7 @@ function createWordElement(wordData, number) {
     div.className = 'word-item';
 
     // Overflow 처리
-    const totalPronunciations = 1 + wordData.developed.length;
+    const totalPronunciations = 1 + (wordData.developed ? wordData.developed.length : 0);
     if (totalPronunciations >= 5) div.classList.add('overflow-5');
     else if (totalPronunciations >= 4) div.classList.add('overflow-4');
 
@@ -423,19 +312,22 @@ function createWordElement(wordData, number) {
         </div>
     `;
 
-    wordData.developed.forEach(dev => {
-        html += `
-            <div class="word-tertiary">
-                <span class="word-prefix">→ 발전: </span>
-                <span class="word-text">${escapeHtml(dev)}</span>
-            </div>
-        `;
-    });
+    if (wordData.developed) {
+        wordData.developed.forEach(dev => {
+            html += `
+                <div class="word-tertiary">
+                    <span class="word-prefix">→ 발전: </span>
+                    <span class="word-text">${escapeHtml(dev)}</span>
+                </div>
+            `;
+        });
+    }
     div.innerHTML = html;
     return div;
 }
 
 function escapeHtml(text) {
+    if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
