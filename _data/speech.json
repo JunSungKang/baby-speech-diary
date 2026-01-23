@@ -137,7 +137,7 @@
 			{
 				"word": "마이크",
 				"first": "뻐큐",
-				"developed": []
+				"developed": [마키]
 			},
 			{
 				"word": "아이스크림",
@@ -334,7 +334,7 @@
 			{
 				"word": "생선",
 				"first": "앵서",
-				"developed": []
+				"developed": [힝선]
 			},
 			{
 				"word": "산타",
@@ -421,6 +421,55 @@
 				"first": "뛰뛰",
 				"developed": []
 			}
+		]
+	},
+	
+	{
+		"type": "content",
+		"id": 8,
+		"memo": "아빠한테 감산다~ 했을때 엄마랑 아빠가 얼마나 감동했는지 몰라!",
+		"photo": "IMG_20240722.jpg",
+		"words": [
+			{
+				"word": "갈매기",
+				"first": "발매기",
+				"developed": []
+			},
+			{
+				"word": "케이크",
+				"first": "케크",
+				"developed": []
+			},
+			{
+				"word": "감사합니다",
+				"first": "감산다",
+				"developed": []
+			},
+			{
+				"word": "바다",
+				"first": "바다",
+				"developed": []
+			},
+			{
+				"word": "고래",
+				"first": "고애",
+				"developed": []
+			},
+			{
+				"word": "아빠 온다",
+				"first": "아빠 띵똥",
+				"developed": []
+			},
+			{
+				"word": "엄마 온다",
+				"first": "엄마 띵똥",
+				"developed": []
+			},
+			{
+				"word": "떠나요",
+				"first": "나요",
+				"developed": []
+			},
 		]
 	}
 ]
