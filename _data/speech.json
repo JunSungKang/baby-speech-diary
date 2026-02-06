@@ -86,7 +86,7 @@
 				"word": "고구마",
 				"first": "고고고마",
 				"developed": [
-					"공공마"
+					"공공마", "공공가"
 				]
 			},
 			{
@@ -179,7 +179,7 @@
 			{
 				"word": "이모부",
 				"first": "뿌",
-				"developed": []
+				"developed": ["이뿌"]
 			}
 		]
 	},
@@ -267,7 +267,7 @@
 			{
 				"word": "하이빅스비",
 				"first": "하부지",
-				"developed": []
+				"developed": ["하비찌"]
 			},
 			{
 				"word": "자전거",
@@ -423,7 +423,6 @@
 			}
 		]
 	},
-	
 	{
 		"type": "content",
 		"id": 8,
@@ -468,6 +467,24 @@
 			{
 				"word": "떠나요",
 				"first": "나요",
+				"developed": []
+			},
+		]
+	},
+	{
+		"type": "content",
+		"id": 9,
+		"memo": "아빠한테 감산다~ 했을때 엄마랑 아빠가 얼마나 감동했는지 몰라!",
+		"photo": "IMG_20240722.jpg",
+		"words": [
+			{
+				"word": "계란",
+				"first": "기앙",
+				"developed": []
+			},
+			{
+				"word": "계단",
+				"first": "기당",
 				"developed": []
 			},
 		]
