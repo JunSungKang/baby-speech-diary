@@ -478,8 +478,8 @@
 		"photo": "IMG_20240722.jpg",
 		"words": [
 			{
-				"word": "계란",
-				"first": "기앙",
+				"word": "고기",
+				"first": "꼬기",
 				"developed": []
 			},
 			{
@@ -487,6 +487,31 @@
 				"first": "기당",
 				"developed": []
 			},
+			{
+				"word": "알러뷰",
+				"first": "알어유",
+				"developed": []
+			},
+			{
+				"word": "요거트",
+				"first": "트",
+				"developed": []
+			},
+			{
+				"word": "궁금해",
+				"first": "굼구매",
+				"developed": []
+			},
+			{
+				"word": "불편해",
+				"first": "부편해",
+				"developed": []
+			},
+			{
+				"word": "스탑",
+				"first": "탑!!",
+				"developed": []
+			}
 		]
 	}
 ]
