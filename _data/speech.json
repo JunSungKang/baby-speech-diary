@@ -22,12 +22,12 @@
 			{
 				"word": "상어",
 				"first": "항어",
-				"developed": []
+				"developed": ["악어"]
 			},
 			{
 				"word": "아기상어",
 				"first": "악어",
-				"developed": []
+				"developed": ["아가"]
 			},
 			{
 				"word": "고래",
@@ -37,7 +37,7 @@
 			{
 				"word": "물놀이",
 				"first": "물",
-				"developed": []
+				"developed": ["물놀"]
 			},
 			{
 				"word": "자장가 꺼줘",
@@ -193,13 +193,13 @@
 				"word": "이모",
 				"first": "임오",
 				"developed": [
-					"커머"
+					"커머", "고모"
 				]
 			},
 			{
 				"word": "고모",
 				"first": "커머",
-				"developed": []
+				"developed": ["고모"]
 			},
 			{
 				"word": "삼촌",
@@ -298,7 +298,7 @@
 				"word": "은채",
 				"first": "채",
 				"developed": [
-					"은재"
+					"은재", "채채"
 				]
 			}
 		]
@@ -510,6 +510,44 @@
 			{
 				"word": "스탑",
 				"first": "탑!!",
+				"developed": []
+			},
+			{
+				"word": "깍두기",
+				"first": "깍두",
+				"developed": []
+			},
+			{
+				"word": "개구리",
+				"first": "구리",
+				"developed": []
+			},
+			{
+				"word": "경찰차",
+				"first": "굥찰차",
+				"developed": []
+			}
+		]
+	},
+	{
+		"type": "content",
+		"id": 9,
+		"memo": "아빠한테 감산다~ 했을때 엄마랑 아빠가 얼마나 감동했는지 몰라!",
+		"photo": "IMG_20240722.jpg",
+		"words": [
+			{
+				"word": "알았지",
+				"first": "아찌",
+				"developed": []
+			},
+			{
+				"word": "알았어",
+				"first": "아써",
+				"developed": ["알쎠"]
+			},
+			{
+				"word": "같이해",
+				"first": "가치",
 				"developed": []
 			}
 		]
