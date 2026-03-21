@@ -569,6 +569,21 @@
 				"word": "리모콘",
 				"first": "이미콘",
 				"developed": []
+			},
+			{
+				"word": "신발",
+				"first": "시빨",
+				"developed": []
+			},
+			{
+				"word": "집에 가자",
+				"first": "집 가까",
+				"developed": []
+			},
+			{
+				"word": "엄마 빨리와",
+				"first": "엄마 빨리",
+				"developed": []
 			}
 		]
 	}
