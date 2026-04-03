@@ -613,6 +613,21 @@
         "word": "쥐",
         "first": "찍짹이",
         "developed": []
+      },
+      {
+        "word": "아름답게",
+        "first": "답게",
+        "developed": []
+      },
+      {
+        "word": "밝게",
+        "first": "바께바께",
+        "developed": []
+      },
+      {
+        "word": "비둘기",
+        "first": "구구",
+        "developed": ["비두기"]
       }
     ]
   }
