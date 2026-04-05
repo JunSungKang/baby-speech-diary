@@ -646,6 +646,31 @@
         "word": "마스크",
         "first": "마스크",
         "developed": []
+      },
+      {
+        "word": "땅콩",
+        "first": "따콩",
+        "developed": []
+      },
+      {
+        "word": "엄마가 땅콩 줬어",
+        "first": "엄마 따콩 줘",
+        "developed": []
+      },
+      {
+        "word": "아몬드",
+        "first": "아모모",
+        "developed": []
+      },
+      {
+        "word": "아빠 아몬드 먹을래?",
+        "first": "아빠 아모모 머래?",
+        "developed": []
+      },
+      {
+        "word": "아빠 먹을래?",
+        "first": "아빠 머골래?",
+        "developed": []
       }
     ]
 ]
