@@ -143,7 +143,7 @@
       {
         "word": "고릴라",
         "first": "고릴",
-        "developed": []
+        "developed": ["골랄라"]
       },
       {
         "word": "귤",
@@ -706,8 +706,28 @@
         "developed": []
       },
       {
-        "word": "고릴라",
-        "first": "골랄라",
+        "word": "하마 싸웠데",
+        "first": "하마 싸오떼",
+        "developed": []
+      },
+      {
+        "word": "이제 다른데 갈까?",
+        "first": "이제 가까?",
+        "developed": []
+      },
+      {
+        "word": "풍선",
+        "first": "풍서",
+        "developed": []
+      },
+      {
+        "word": "솜사탕",
+        "first": "손사탕",
+        "developed": []
+      },
+      {
+        "word": "아이스크림",
+        "first": "아키",
         "developed": []
       }
     ]
