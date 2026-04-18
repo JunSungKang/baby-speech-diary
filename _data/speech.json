@@ -729,6 +729,39 @@
         "word": "아이스크림",
         "first": "아키",
         "developed": []
+      },
+      {
+        "word": "사탕",
+        "first": "아탕",
+        "developed": ["하탕"]
+      },
+      {
+        "word": "뭐라구?",
+        "first": "어라구",
+        "developed": []
+      },
+      {
+        "word": "알았어",
+        "first": "아라따",
+        "developed": ["아라따구"]
+      }
+    ]
+  }, 
+  {
+    "type": "content",
+    "id": 14,
+    "memo": "이제는 긴 단어에도 겁 없이 손을 뻗는 시기. \"신델라\"라고 부르는 그 용기가 너무 예쁘고 기특하다.",
+    "photo": "IMG_20240722.jpg",
+    "words": [
+      {
+        "word": "도망가",
+        "first": "어망가",
+        "developed": []
+      },
+      {
+        "word": "아파트",
+        "first": "빠트",
+        "developed": []
       }
     ]
   }
