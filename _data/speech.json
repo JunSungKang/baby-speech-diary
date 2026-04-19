@@ -762,6 +762,26 @@
         "word": "아파트",
         "first": "빠트",
         "developed": []
+      },
+      {
+        "word": "무슨 소리야?",
+        "first": "몬소리야?",
+        "developed": []
+      },
+      {
+        "word": "편지",
+        "first": "팬티",
+        "developed": ["팬지"]
+      },
+      {
+        "word": "케이크",
+        "first": "크",
+        "developed": ["케크"]
+      },
+      {
+        "word": "아빠! 엄마 아프데 어떡하지?",
+        "first": "빠! 마가! 프데! 오떡해야지?,
+        "developed": []
       }
     ]
   }
