@@ -163,12 +163,12 @@
       {
         "word": "할머니",
         "first": "할미",
-        "developed": []
+        "developed": ["할모니"]
       },
       {
         "word": "할아버지",
         "first": "하삐",
-        "developed": ["하모니"]
+        "developed": ["하모니","하보지"]
       },
       {
         "word": "이모부",
