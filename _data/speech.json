@@ -787,6 +787,34 @@
         "word": "엄마(아빠) 신발 신어",
         "first": "옴마(아빠)! 씨빨! 신어! 빨리!",
         "developed": []
+      },
+      {
+        "word": "불도저",
+        "first": "부도자",
+        "developed": []
+      },
+      {
+        "word": "굴착기",
+        "first": "불차기",
+        "developed": []
+      },
+      {
+        "word": "구급차",
+        "first": "구조차",
+        "developed": []
+      }
+    ]
+  },
+  {
+    "type": "content",
+    "id": 15,
+    "memo": "이제는 긴 단어에도 겁 없이 손을 뻗는 시기. \"신델라\"라고 부르는 그 용기가 너무 예쁘고 기특하다.",
+    "photo": "IMG_20240722.jpg",
+    "words": [
+      {
+        "word": "차장님",
+        "first": "사장님",
+        "developed": []
       }
     ]
   }
