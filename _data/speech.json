@@ -825,6 +825,74 @@
         "word": "아빠한테 가자",
         "first": "아빠테 가자",
         "developed": []
+      },
+      {
+        "word": "의사선생님",
+        "first": "엄마선생님",
+        "developed": []
+      },
+      {
+        "word": "주말이야!",
+        "first": "주마리",
+        "developed": []
+      },
+      {
+        "word": "귀뚜라미",
+        "first": "귀뚜리",
+        "developed": []
+      },
+      {
+        "word": "혈당체크",
+        "first": "아야~ 피",
+        "developed": []
+      },
+      {
+        "word": "오늘은 엄마랑 잘래",
+        "first": "엄마랑도 오늘도 잘래",
+        "developed": []
+      },
+      {
+        "word": "아빠 침대로 가",
+        "first": "아빠 침대 가",
+        "developed": []
+      },
+      {
+        "word": "삐졌어",
+        "first": "삐~",
+        "developed": []
+      }
+    ]
+  },
+  {
+    "type": "content",
+    "id": 16,
+    "memo": "이제는 긴 단어에도 겁 없이 손을 뻗는 시기. \"신델라\"라고 부르는 그 용기가 너무 예쁘고 기특하다.",
+    "photo": "IMG_20240722.jpg",
+    "words": [
+      {
+        "word": "물 주세요",
+        "first": "시언한 물",
+        "developed": []
+      },
+      {
+        "word": "미용실 놀이 하자",
+        "first": "미용실 앉아",
+        "developed": []
+      },
+      {
+        "word": "캥거루",
+        "first": "캥고루",
+        "developed": []
+      },
+      {
+        "word": "감",
+        "first": "감자",
+        "developed": []
+      },
+      {
+        "word": "엄마 밥 드세요~",
+        "first": "엄마 맘마 먹어야지요~ 언는 나오세요~",
+        "developed": ["엄마가 안나오네~ 엄마 맘마 먹어야지요~", "아빠 엄마 모해? 엄마 안나오네~"]
       }
     ]
   }
